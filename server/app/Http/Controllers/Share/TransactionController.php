@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
-
+use App\Models\Portfolio;
 class TransactionController extends Controller
 {
     /**
@@ -144,6 +144,11 @@ class TransactionController extends Controller
         $this->sellShare($request);
 
     }
+    public function hello(Request $request){
+        return response()->json([
+            "data"=>$request->user()
+        ]);
+    }
 
     /**
      * Display the specified resource.
@@ -151,30 +156,57 @@ class TransactionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        $transaction = Transaction::all()->where('portfolio_id','=',$id)->groupBy('name');
-        return response()->json([
-            'data'=>$transaction
-        ]);
+        $list = Portfolio::select('id')->where('user_id',$request->user()->id)->get();
+        $flag=true;
+        foreach($list as $data){
+            if ($data->id == $id){
+                $transaction = Transaction::all()->where('portfolio_id','=',$id)->groupBy('name');
+                return response()->json([
+                    'data'=>$transaction,
+                    
+                ]);
+                $flag=false;
+                break;
+            }
+            
+        }
+        if ($flag == true){
+            return response()->json([
+                'status'=>404,
+                
+            ]);
+        }
+       
     }
 
  
     public function singleTransaction($id,$name, Request $request)
-    {
-        $transaction = Transaction::all()->where('portfolio_id','=',$id)->where('name','=',$name)->groupBy('name');
-        
-        if ($transaction->isEmpty()){
+    {   
+        $list = Portfolio::select('id')->where('user_id',$request->user()->id)->get();
+        $flag=true;
+        foreach($list as $data){
+            if ($data->id == $id){
+                $transaction = Transaction::all()->where('portfolio_id','=',$id)->where('name','=',$name)->sortByDesc('date')->groupBy('name');
+                if (!$transaction->isEmpty()){
+                    return response()->json([
+                        'data'=>$transaction,
+                        'status'=>200
+                    ]);
+                    $flag=false;
+                break;
+                 }
+            }
+        }
+        if ($flag == true){
             return response()->json([
                 'status'=>404,
-            ]);
-                   }
-        else{
-            return response()->json([
-                'data'=>$transaction,
-                'status'=>200
+                
             ]);
         }
+            
+        
     }
     public function average($id,$name, Request $request)
     {
@@ -189,17 +221,10 @@ class TransactionController extends Controller
             }
         }
         $average = $investment/$units;
-        // if ($transaction->isEmpty()){
-        //     return response()->json([
-        //         'status'=>404,
-        //     ]);
-        //            }
-        // else{
             return response()->json([
                 'status'=>200,
                 'average'=>round($average,2)
             ]);
-        // }
     }
 
     /**

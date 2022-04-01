@@ -42,11 +42,20 @@ class PortfolioController extends Controller
             ]);
     // }
     }
-    public function singlePortfolio($id){
-        $portfolio = Portfolio::where('id',$id)->get();
-        return response()->json([
-            'status'=>$portfolio
-        ]);
+    public function singlePortfolio(Request $request, $id){
+        $portfolio = Portfolio::where('id',$id)->where('user_id',$request->user()->id)->get();
+        if ($portfolio->isEmpty()){
+            return response()->json([
+                'status'=>404,
+            ]);
+                   }
+        else{
+            return response()->json([
+                'status'=>$portfolio
+            ]);
+        }
+        
+       
 
     }
 

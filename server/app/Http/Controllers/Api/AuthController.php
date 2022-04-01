@@ -59,13 +59,21 @@ class AuthController extends Controller
                 ]);
             }
             else
-            $token = $user->createToken($user->email.'_Token',[''])->plainTextToken;
+            if($user->role_as == 1){
+                $role='admin';
+                $token = $user->createToken($user->email.'_AdminToken',['server:admin'])->plainTextToken;
+                
+            }else{
+                $role='null';
+                $token = $user->createToken($user->email.'_Token',[''])->plainTextToken;
+            }
             {
                 return response()->json([
                     'status'=>200,
                     'username'=>$user->name,
                     'token'=>$token,
                     'user_id'=>$user->id,
+                    "role"=>$role,
 
                 ]);
             }
@@ -76,6 +84,11 @@ class AuthController extends Controller
         return response()->json([
             'status'=>200,
             'message'=>"Logged out successfully"
+        ]);
+    }
+    public function get_role(Request $request){
+        return response()->json([
+            'role'=>$request->user()->role_as,
         ]);
     }
 }

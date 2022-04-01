@@ -22,14 +22,14 @@ use App\Http\Controllers\Share\TransactionController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);
 
 Route::middleware(['auth:sanctum'])->group(function(){
+    Route::get('/sample',[TransactionController::class,'hello']);
     Route::post('/logout',[AuthController::class,'logout']);
+    Route::get('/getrole',[AuthController::class,'get_role']);
     // Portfolio
     Route::post('/create-portfolio',[PortfolioController::class,'createPortfolio']);
     Route::get('/get-portfolio/{id}',[PortfolioController::class,'listUserPortfolio']);
@@ -59,10 +59,20 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::get('/gainer',[App\Http\Controllers\Share\DailyShareController::class,'gainer']);
     // Admin Call
 });
+
+Route::middleware(['auth:sanctum','isAPIAdmin'])->group(function(){
+    Route::get('/checkAuthenticated',function(){
+        return response()->json(['message'=>'You are in ', 'status'=>200],200);
+    });
+    
+}); 
+
+
+
 Route::get('/dailycall',[App\Http\Controllers\Share\DailyShareController::class,'dailyShare']);
 Route::get('/company',[App\Http\Controllers\Share\CompanyDetailController::class,'importCompanyDetails']);
 
 
 Route::post('/forgot-password',[ResetPasswordController::class,'forgotPassword']);
-// Route::post('/reset-password'.[ResetPasswordController::class,'resetPassword']);
+Route::post('/reset-password',[ResetPasswordController::class,'resetPassword']);
 
