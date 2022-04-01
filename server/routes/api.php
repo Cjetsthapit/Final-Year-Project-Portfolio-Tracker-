@@ -57,7 +57,6 @@ Route::middleware(['auth:sanctum'])->group(function(){
     // User call
     Route::get('/call',[App\Http\Controllers\Share\DailyShareController::class,'call']);
     Route::get('/gainer',[App\Http\Controllers\Share\DailyShareController::class,'gainer']);
-    // Admin Call
 });
 
 Route::middleware(['auth:sanctum','isAPIAdmin'])->group(function(){
@@ -65,12 +64,12 @@ Route::middleware(['auth:sanctum','isAPIAdmin'])->group(function(){
         return response()->json(['message'=>'You are in ', 'status'=>200],200);
     });
     
+    Route::get('/dailycall',[App\Http\Controllers\Share\DailyShareController::class,'dailyShare']);
+    Route::get('/company',[App\Http\Controllers\Share\CompanyDetailController::class,'importCompanyDetails']);
 }); 
 
 
 
-Route::get('/dailycall',[App\Http\Controllers\Share\DailyShareController::class,'dailyShare']);
-Route::get('/company',[App\Http\Controllers\Share\CompanyDetailController::class,'importCompanyDetails']);
 
 
 Route::post('/forgot-password',[ResetPasswordController::class,'forgotPassword']);
