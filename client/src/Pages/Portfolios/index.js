@@ -66,10 +66,10 @@ const PortfolioList = () => {
             ;
     }
     if (loading) {
-        return (<Layout><CssLoader /></Layout>)
+        return (<><CssLoader /></>)
     }
     return (
-        <Layout>
+        <>
 
             <Grid sx={{ margin: '100px auto', width: '80%' }}>
                 <Grid container justify="space-between">
@@ -96,7 +96,7 @@ const PortfolioList = () => {
 
             </Container>
 
-        </Layout>
+        </>
     )
 }
 

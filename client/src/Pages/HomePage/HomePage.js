@@ -86,13 +86,13 @@ const HomePage = () => {
   };
   if (loading) {
     return (
-      <Layout>
+
         <CssLoader />
-      </Layout>
+
     );
   }
   return (
-    <Layout>
+    <>
       <Grid container spacing={3}>
         <Grid item xs={6}>
           <TableContainer component={Paper} elevation={10}>
@@ -221,7 +221,7 @@ const HomePage = () => {
           </TableBody>
         </Table>
       </TableContainer>
-    </Layout>
+    </>
   );
 };
 

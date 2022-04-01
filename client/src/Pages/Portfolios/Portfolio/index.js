@@ -14,8 +14,8 @@ import AddCircleOutlineOutlined from "@material-ui/icons/AddCircleOutlineOutline
 import { Stack } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { getTransaction } from "../../../api/service";
+import { useHistory, useParams } from "react-router-dom";
+import { getTransaction, singlePortfolio } from "../../../api/service";
 import CssLoader from "../../../components/CssLoader/CssLoader";
 import Layout from "../../../components/Layout/Layout";
 import AddTransaction from "../../../components/Transactions/add";
@@ -25,7 +25,8 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import { styled } from "@mui/material/styles";
 import BigComponent from "../../../components/Transactions/BlockView/BigComponent";
 
-const Portfolio = ({ fetchShares }) => {
+const Portfolio = () => {
+  const history = useHistory();
   const [portfolio, setPortfolio] = useState();
   const [view, setView] = useState(true);
   const [transaction, setTransaction] = useState();
@@ -35,22 +36,28 @@ const Portfolio = ({ fetchShares }) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const { id } = useParams();
-  console.log(window.location.href);
+
   useEffect(() => {
+    singlePortfolio(id) .then((res) => {
+      if(res.data.status === 404){
+        history.goBack();
+      }else{
+        setPortfolio(res.data.status[0]);
+      }
+    });
     getTransaction(id).then((res) => {
-      setTransaction(res.data.data);
-      console.log(res.data.data);
+      if(res.data.status === 404){
+        history.push('/portfolio');
+      }else{
+        setTransaction(res.data.data);
+
+      }
     });
     axios.get(`/api/call`).then((res) => {
       setShare(res.data.share);
-    });
-    // fetchShares(id);
-    axios.get(`/api/fetch-portfolio/${id}`).then((res) => {
-      setPortfolio(res.data.status[0]);
       setLoading(false);
     });
   }, [setTransaction]);
-  // console.log(portfolio.name)
   let filterData = (symbol) => {
     return share && share.filter((item) => item.symbol === symbol);
   };
@@ -147,14 +154,14 @@ const Portfolio = ({ fetchShares }) => {
 
   if (loading) {
     return (
-      <Layout>
+      <>
         <CssLoader />
-      </Layout>
+      </>
     );
   }
 
   return (
-    <Layout>
+    <>
       <Grid sx={{ margin: "100px auto", width: "80%" }}>
         <Grid container justify="space-between">
           <Typography variant="h5">
@@ -240,7 +247,7 @@ const Portfolio = ({ fetchShares }) => {
           </TableContainer>
         )}
       </Container>
-    </Layout>
+    </>
   );
 };
 

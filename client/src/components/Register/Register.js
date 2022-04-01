@@ -1,73 +1,144 @@
-import React,{useState} from 'react'
-import { Grid, Paper, Avatar, TextField, Button, Typography, Link } from '@material-ui/core'
-import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
-import { toast } from 'react-toastify';
-import axios from 'axios';
-import {useHistory} from 'react-router';
+import React, { useState } from "react";
+import {
+  Grid,
+  Paper,
+  Avatar,
+  TextField,
+  Button,
+  Typography,
+  Link,
+} from "@material-ui/core";
+import AddCircleOutlineOutlinedIcon from "@material-ui/icons/AddCircleOutlineOutlined";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { useHistory } from "react-router";
 
 const Register = ({ handleChange }) => {
-    const history=useHistory();
-    const [name,setName]=useState('');
-    const [email,setEmail]=useState('');
-    const [date,setDate]=useState('');
-    const [password,setPassword]=useState('');
-    const [cpassword,setCpassword]=useState('');
+  const history = useHistory();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [date, setDate] = useState("");
+  const [password, setPassword] = useState("");
+  const [cpassword, setCpassword] = useState("");
 
-    const paperStyle = { padding: 20, minHeight: '50vh', minWidth: '350px',width:'30%',  margin: "0 auto" }
-    const avatarStyle = { backgroundColor: '#222' }
-    const btnstyle = { margin: '8px 0', backgroundColor: '#222' }
-    const handleRegister=(e)=>{
-        e.preventDefault();
-        // console.log(name,email,date,password,cpassword);
-        const data={name:name,email:email,date:date,password:password};
-      
-     axios.get('/sanctum/csrf-cookie').then((response)=>{
-         axios.post(`api/register`,data).then((res)=>{
-             console.log(res.data)
-             if (password === cpassword){
-                if(res.data.status === '200'){
-                    localStorage.setItem('auth_token',res.data.token);
-                    localStorage.setItem('name',res.data.username);
+  const paperStyle = {
+    padding: 20,
+    minHeight: "50vh",
+    minWidth: "350px",
+    width: "30%",
+    margin: "0 auto",
+  };
+  const avatarStyle = { backgroundColor: "#222" };
+  const btnstyle = { margin: "8px 0", backgroundColor: "#222" };
+  const handleRegister = (e) => {
+    e.preventDefault();
+    // console.log(name,email,date,password,cpassword);
+    const data = { name: name, email: email, date: date, password: password };
 
-                    toast.success("Registered Successfully");
-                    history.push('/homepage')
-                } else if(res.data.validation_errors.email[0] === 'The email has already been taken.'){
-                    toast.warn('Email already exists');
-                }
-             }
-             else{
-                 toast.error("Password does not match")
-             }
-         });
-     });
-    }
-    return (
-        <Grid>
-            <Paper style={paperStyle} elevation={24} >
-                <Grid align='center'>
-                    <Avatar style={avatarStyle}><AddCircleOutlineOutlinedIcon /></Avatar>
-                    <Typography variant="h5">Register</Typography>
-                </Grid>
-                <form onSubmit={handleRegister}>
-                    <TextField label='Name' placeholder='Enter full name' fullWidth margin="dense" variant="filled" value={name} onChange={(e)=>setName(e.target.value)}/>
-                    <TextField label='Email' placeholder='Enter email' type="email" fullWidth margin="dense" variant="filled" value={email} onChange={(e)=>setEmail(e.target.value)}/>
-                    <TextField label='Date of Birth' placeholder='Enter date of birth' fullWidth margin="dense" variant="filled" value={date} onChange={(e)=>setDate(e.target.value)}/>
+    axios.get("/sanctum/csrf-cookie").then((response) => {
+      axios.post(`api/register`, data).then((res) => {
+        console.log(res.data);
+        if (password === cpassword) {
+          if (res.data.status === "200") {
+            localStorage.setItem("auth_token", res.data.token);
+            localStorage.setItem("name", res.data.username);
 
-                    <TextField label='Password' placeholder='Enter password' type='password' fullWidth margin="dense" variant="filled" value={password} onChange={(e)=>setPassword(e.target.value)}/>
-                    <TextField label='Confirm Password' placeholder='Enter password again' type='password' fullWidth margin="dense" variant="filled" value={cpassword} onChange={(e)=>setCpassword(e.target.value)}/>
-
-                    <Button type='submit' color='primary' variant="contained" style={btnstyle} fullWidth >Register</Button>
-                </form>
-                <Typography > Already have an account ?
-                    <Link href="#" onClick={() => handleChange("event", 0)} >
-                        Sign in
-                    </Link>
-                </Typography>
-            </Paper>
+            toast.success("Registered Successfully");
+            history.push("/homepage");
+          } else if (
+            res.data.validation_errors.email[0] ===
+            "The email has already been taken."
+          ) {
+            toast.warn("Email already exists");
+          }
+        } else {
+          toast.error("Password does not match");
+        }
+      });
+    });
+  };
+  return (
+    <Grid>
+      <Paper style={paperStyle} elevation={24}>
+        <Grid align="center">
+          <Avatar style={avatarStyle}>
+            <AddCircleOutlineOutlinedIcon />
+          </Avatar>
+          <Typography variant="h5">Register</Typography>
         </Grid>
-    );
-}
+        <form onSubmit={handleRegister}>
+          <TextField
+            label="Name"
+            placeholder="Enter full name"
+            fullWidth
+            margin="dense"
+            variant="filled"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <TextField
+            label="Email"
+            placeholder="Enter email"
+            type="email"
+            fullWidth
+            margin="dense"
+            variant="filled"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <TextField
+            InputLabelProps={{
+              shrink: true,
+            }}
+            label="Date of Birth"
+            type="date"
+            fullWidth
+            margin="dense"
+            variant="filled"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+          />
+          <TextField
+            label="Password"
+            placeholder="Enter password"
+            type="password"
+            fullWidth
+            margin="dense"
+            variant="filled"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <TextField
+            label="Confirm Password"
+            placeholder="Enter password again"
+            type="password"
+            fullWidth
+            margin="dense"
+            variant="filled"
+            value={cpassword}
+            onChange={(e) => setCpassword(e.target.value)}
+          />
+
+          <Button
+            type="submit"
+            color="primary"
+            variant="contained"
+            style={btnstyle}
+            fullWidth
+          >
+            Register
+          </Button>
+        </form>
+        <Typography>
+          {" "}
+          Already have an account ?
+          <Link href="#" onClick={() => handleChange("event", 0)}>
+            Sign in
+          </Link>
+        </Typography>
+      </Paper>
+    </Grid>
+  );
+};
 
 export default Register;
-
-

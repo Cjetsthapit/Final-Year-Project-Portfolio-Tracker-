@@ -11,7 +11,7 @@ const ForgotPassword = () => {
     const handleForgotPassword=(e)=>{
         e.preventDefault();
         const emailUser={email};
-        axios.get('/sanctum/csrf-cookie').then(response=>{
+        axios.get('/sanctum/csrf-cookie').then(res=>{
             axios.post(`api/forgot-password`,emailUser).then(res=>{
                 if (res.data === ""){
                     toast.error('Enter correct email address')
@@ -32,7 +32,7 @@ const ForgotPassword = () => {
                     <Typography variant="h5">Reset your password</Typography>
                 </Grid>
                 <form onSubmit={handleForgotPassword}>
-                    <TextField label='Email' placeholder='Enter email to reset the password' fullWidth margin="dense" variant="outlined" type="email" style={{marginBottom:'20px'}} value={email} onChange={e=>setEmail(e.target.value)} />
+                    <TextField label='Email' placeholder='Enter email to reset the password' fullWidth margin="dense" variant="filled" type="email" style={{marginBottom:'20px'}} value={email} onChange={e=>setEmail(e.target.value)} />
                     <Button type='submit' color='primary' variant="contained" style={btnstyle} fullWidth>Reset</Button>
                     <Button  variant="contained" fullWidth href="/" >Cancel</Button>
 

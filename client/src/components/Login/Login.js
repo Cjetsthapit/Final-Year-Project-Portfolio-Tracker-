@@ -30,11 +30,11 @@ const Login = ({ handleChange }) => {
 
                     // localStorage.setItem('verified_at', res.data.verified_at);
                     toast.success('Logged in Successfully');
-                    // if (res.data.role === 'admin') {
-                    //     history.push('/admin/dashboard');
-                    // } else {
+                    if (res.data.role === 'admin') {
+                        history.push('/dashboard');
+                    } else {
                     history.push('/homepage');
-                    // }
+                    }
                 } else if (res.data.status === 401) {
                     return toast.error(res.data.message);
                 }

@@ -43,7 +43,13 @@ const DetailedView = () => {
   const number = location.state?.number;
   useEffect(() => {
     singlePortfolio(id).then((res) => {
-      setPortfolio(res.data.status[0]);
+      if(res.data.status  === 404){
+        history.goBack();
+      }
+      else{
+        setPortfolio(res.data.status[0]);
+
+      }
     });
     axios.get(`/api/call`).then((res) => {
       setShare(res.data.share);
@@ -52,7 +58,7 @@ const DetailedView = () => {
       if (res.data.status === 404) {
         history.goBack();
       } else {
-        console.log(res.data.data[name]);
+        console.log(res.data.data);
         setDatas(res.data.data[name]);
       }
     });
@@ -90,7 +96,7 @@ const DetailedView = () => {
     },
   }));
   return (
-    <Layout>
+    <>
       <Grid sx={{ margin: "100px auto", width: "80%" }}>
         <Grid container justify="space-between">
           <Typography variant="h5">{portfolio?.name} </Typography>
@@ -189,7 +195,7 @@ const DetailedView = () => {
           </TableBody>
         </Table>
       </TableContainer>
-    </Layout>
+    </>
   );
 };
 

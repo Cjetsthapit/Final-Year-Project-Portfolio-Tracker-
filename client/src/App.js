@@ -1,4 +1,4 @@
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import './App.css';
 import LoginRegister from './Pages/LoginRegister/LoginRegister';
 import { ToastContainer } from 'react-toastify';
@@ -18,6 +18,12 @@ import PortfolioList from './Pages/Portfolios';
 import Portfolio from './Pages/Portfolios/Portfolio';
 import Compare from './Pages/Compare';
 import DetailedView from './components/Transactions/DetailedView';
+import ResetPassword from './Pages/ResetPassword/ResetPassword';
+import AdminRoute from './components/AdminRoute';
+import Dashboard from './Pages/Admin/Dashboard';
+import Layout from './components/Layout/Layout';
+import Controls from './Pages/Admin/Controls';
+
 
 
 
@@ -42,10 +48,19 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <ToastContainer />
+
         <Switch>
-          <Route exact path="/" component={LoginRegister}></Route>
+          <Route exact path="/" component={LoginRegister}>
+            {localStorage.getItem('auth_token') ? <Redirect to="/homepage" /> : <LoginRegister/>}
+          </Route>
           <Route path="/forgot-password" component={ForgotPassword}></Route>
+          <Route path="/reset-password" component={ResetPassword}></Route>
+
           <Route path="/error" component={Error404}></Route>
+
+
+          <AdminRoute path="/dashboard" component={Dashboard}/>
+          <AdminRoute path="/import" component={Controls}/>
 
           <ProtectedRoute path="/homepage/:id" component={Company} />
           <ProtectedRoute path="/homepage" component={HomePage} />
@@ -65,6 +80,8 @@ function App() {
 
           <Route component={Error404} />
         </Switch>
+        
+
       </ThemeProvider>
     </>
 

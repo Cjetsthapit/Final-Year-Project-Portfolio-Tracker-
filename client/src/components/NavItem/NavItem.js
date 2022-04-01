@@ -3,7 +3,6 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 
 const NavItem = ({ href, title }) => {
-
     return (
         <ListItem
             disableGutters

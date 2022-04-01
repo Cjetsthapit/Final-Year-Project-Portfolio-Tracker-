@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { useHistory, useParams } from 'react-router-dom'
-import Layout from '../../components/Layout/Layout';
 import CssLoader from '../../components/CssLoader/CssLoader';
 import { Chip, Grid } from '@mui/material';
 import Table from '@mui/material/Table';
@@ -33,11 +32,11 @@ const Company = () => {
     if (loading) {
         return (
 
-            <Layout><CssLoader /></Layout>
+           <CssLoader />
         )
     }
     return (
-        <Layout>
+        <>
             <Chip label={company.fname} sx={{ background: '#111827', color: 'white', padding: '20px 18px', fontSize: '1.1rem' }} />
             <Grid container spacing={2}>
                 <Grid item xs={8}>
@@ -119,7 +118,7 @@ const Company = () => {
             </Grid>
 
 
-        </Layout>
+        </>
     )
 }
 

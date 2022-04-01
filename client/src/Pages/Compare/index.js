@@ -14,7 +14,6 @@ import {
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Row from "../../components/Compare/Row";
-import Layout from "../../components/Layout/Layout";
 const SelectForm = ({ share, handleClick,pointer }) => {
     return (
         <FormControl sx={{ mb: 1 }} fullWidth margin="dense" variant="filled">
@@ -58,7 +57,7 @@ const Compare = () => {
         });
     };
     return (
-        <Layout>
+        <>
             <Grid container justify="space-between">
                 <Typography variant="h5" style={{ marginBottom: "8px" }}>
                     Compare Stocks
@@ -148,7 +147,7 @@ const Compare = () => {
                     <Row share={share3}></Row>
                 </Grid>
             </Grid>
-        </Layout>
+        </>
     );
 };
 
