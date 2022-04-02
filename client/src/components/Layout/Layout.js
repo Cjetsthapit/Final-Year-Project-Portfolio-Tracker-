@@ -36,13 +36,7 @@ const items = [
 ];
 function Layout(props) {
   const [role, setRole] = useState();
-  let dash;
-  useEffect(() => {
-    axios.get(`/api/getrole`).then((res) => {
-        setRole(res.data.role)
-    });
-    
-  }, []);
+ 
 
   const history = useHistory();
   const { window } = props;
@@ -84,41 +78,9 @@ function Layout(props) {
         }}
       />
       <List>
-          {dash}
         {items.map((item) => (
           <NavItem key={item.title} href={item.href} title={item.title} />
         ))}
-        {role === 1 ? (
-          <ListItem
-            disableGutters
-            sx={{
-              display: "flex",
-              mb: 0.5,
-              py: 0,
-              px: 5,
-            }}
-          >
-            <NavLink
-              to="/dashboard"
-              style={{
-                textDecoration: "none",
-                borderRadius: 1,
-                padding: "11px 24px",
-                textAlign: "left",
-                textTransform: "none",
-                width: "100%",
-                color: "#D1D5DB",
-              }}
-              activeStyle={{
-                backgroundColor: "rgba(255,255,255, 0.08)",
-                fontWeight: "600",
-                color: "#e3e3e3",
-              }}
-            >
-              Dashboard
-            </NavLink>
-          </ListItem>
-        ) : null}
       </List>
       <Divider />
     </div>

@@ -60,7 +60,8 @@ function App() {
 
 
           <AdminRoute path="/dashboard" component={Dashboard}/>
-          <AdminRoute path="/import" component={Controls}/>
+          <AdminRoute path="/data/:id" component={Company}/>
+          <AdminRoute path="/data" component={Controls}/>
 
           <ProtectedRoute path="/homepage/:id" component={Company} />
           <ProtectedRoute path="/homepage" component={HomePage} />

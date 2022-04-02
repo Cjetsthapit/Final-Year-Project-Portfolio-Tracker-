@@ -22,7 +22,7 @@ const items = [
         title: 'Dashboard'
     },
     {
-        href:'/import',
+        href:'/data',
         title:'Controls'
     }
 ]

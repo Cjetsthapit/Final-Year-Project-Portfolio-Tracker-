@@ -27,3 +27,7 @@ export const singlePortfolio=(id)=>{
 export const singleTransaction=(id,name)=>{
     return axios.get(`/api/get-singletransaction/${id}/${name}`)
 }
+export const ShareData=async()=>{
+    const request = await axios.get(`/api/call`);
+    return request;
+}
