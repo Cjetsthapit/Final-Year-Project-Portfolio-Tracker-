@@ -49,7 +49,7 @@ const Row = ({share}) => {
             <TableCell className={share ? ((share[0].bonus).substring(0,(share[0].bonus).length-12))> 0 ? 'bg-success text-white' : 'bg-danger text-white': ''}>{share ? share[0].bonus : '\u00A0'}</TableCell>
         </TableRow>
         <TableRow>
-            <TableCell className={share ? ((share[0].rightshares).substring(0,(share[0].rightshares).length-12))> 0 ? 'bg-success text-white' : 'bg-danger text-white': ''}>{share ? share[0].rightshares : '\u00A0'}</TableCell>
+            <TableCell className={share ? (share[0].rightshares) === 'No Data at the Moment' ? 'bg-danger text-white' : 'bg-success text-white': ''}>{share ? share[0].rightshares : '\u00A0'}</TableCell>
         </TableRow>
         <TableRow>
             <TableCell>{share ? share[0].avgvol : '\u00A0'}</TableCell>

@@ -14,7 +14,7 @@ import AddCircleOutlineOutlined from "@material-ui/icons/AddCircleOutlineOutline
 import { Stack } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { Redirect, useHistory, useParams } from "react-router-dom";
 import { getTransaction, singlePortfolio } from "../../../api/service";
 import CssLoader from "../../../components/CssLoader/CssLoader";
 import Layout from "../../../components/Layout/Layout";
@@ -151,7 +151,10 @@ const Portfolio = () => {
         border: 0,
       },
     }));
-
+    const navigatetoGraph=(e)=>{
+      e.preventDefault();
+      history.push(`/portfolio-chart/${id}`);
+    }
   if (loading) {
     return (
       <>
@@ -167,6 +170,7 @@ const Portfolio = () => {
           <Typography variant="h5">
             {portfolio?.name}{" "}
             <ChangeCircleIcon onClick={() => setView(!view)} fontSize="large" />
+            <Button variant="contained" style={{marginLeft:'2vh'}} color="primary" onClick={navigatetoGraph}>Graph</Button>
           </Typography>
           <Stack direction="row" spacing={2}>
             <Button

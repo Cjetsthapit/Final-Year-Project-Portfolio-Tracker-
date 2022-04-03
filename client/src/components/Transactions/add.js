@@ -35,24 +35,23 @@ const AddTransaction = ({
   share,
   data,
   ttype,
-  item
+  item,
 }) => {
   const { id } = useParams();
   const { name } = useParams();
   const [fdata, setfData] = useState();
-
   const [tshare, setTshare] = useState();
   const [tdate, setTdate] = useState();
   const [tunits, setTunits] = useState();
   const [tprice, setTprice] = useState();
-  const [gain, setGain] = useState(7.5);
+  const [gain, setGain] = useState();
   const [avg, setAvg] = useState();
   useEffect(() => {
     if (share[0]) {
       setTshare(share[0].symbol);
     }
-    if (data) {
-      setfData(data);
+    if (item) {
+      return;
     }
     axios.get(`/api/get-average/${id}/${name}`).then((res) => {
       setAvg(res.data.average);
@@ -60,7 +59,7 @@ const AddTransaction = ({
   }, []);
   const handleAdd = (e) => {
     e.preventDefault();
-    if (ttype === "sell") {
+    if (item?.type === "sell") {
       const data = {
         portfolio_id: id,
         name: tshare,
@@ -71,16 +70,58 @@ const AddTransaction = ({
         avg: avg,
         gainper: gain,
       };
-      axios.post(`/api/sell-transaction`, data).then((res) => {
-        if (res.data.status === 200) {
-          toast.success("Sold");
+      console.log(data)
+      if (tdate && tprice && tunits && avg && gain) {
+
+      axios.post(`/api/editsell-transaction/${item?.id}`, data).then((res) => {
+        
+          toast.success("Updated");
           window.location.reload();
+        });
         } else {
           handleClose();
           toast.error("Please fill in all the fields correctly");
         }
-      });
-    } else {
+    } else if (item?.type === "buy") {
+      const data = {
+        portfolio_id: id,
+        name: tshare,
+        date: tdate,
+        price: tprice,
+        units: tunits,
+        type: "buy",
+      };
+      if (tdate && tprice && tunits) {
+      
+        axios.post(`/api/editbuy-transaction/${item?.id}`, data).then((res) => {
+          toast.success("Updated");
+          window.location.reload();
+        });
+      }
+      else{
+        toast.error("Please fill in all the fields correctly");
+      }
+    } else if (ttype === "sell") {
+      const data = {
+        portfolio_id: id,
+        name: tshare,
+        date: tdate,
+        price: tprice,
+        units: tunits,
+        type: "sell",
+        avg: avg,
+        gainper: gain,
+      };
+      if (tdate && tprice && tunits && avg && gain) {
+        axios.post(`/api/sell-transaction`, data).then((res) => {
+          toast.success("Sold");
+          window.location.reload();
+        });
+      } else {
+        handleClose();
+        toast.error("Please fill in all the fields correctly");
+      }
+    } else if (ttype === "buy") {
       const data = {
         portfolio_id: id,
         name: tshare,
@@ -91,40 +132,6 @@ const AddTransaction = ({
       };
       axios.post(`/api/create-transaction`, data).then((res) => {
         toast.success("Added");
-        window.location.reload();
-      });
-    }
-    if(item?.type === 'sell'){
-      const data = {
-        portfolio_id: id,
-        name: tshare,
-        date: tdate,
-        price: tprice,
-        units: tunits,
-        type: "sell",
-        avg: avg,
-        gainper: gain,
-      };
-      axios.post(`/api/editsell-transaction/${item?.id}`, data).then((res) => {
-        if (res.data.status === 200) {
-          toast.success("Updated");
-          window.location.reload();
-        } else {
-          handleClose();
-          toast.error("Please fill in all the fields correctly");
-        }
-      });
-    }else{
-      const data = {
-        portfolio_id: id,
-        name: tshare,
-        date: tdate,
-        price: tprice,
-        units: tunits,
-        type: "buy",
-      };
-      axios.post(`/api/editbuy-transaction/${item?.id}`, data).then((res) => {
-        toast.success("Updated");
         window.location.reload();
       });
     }
@@ -187,7 +194,6 @@ const AddTransaction = ({
           <FormControl margin="dense">
             <FormLabel>Capital Gain Tax</FormLabel>
             <RadioGroup
-              defaultValue="7.5"
               variant="filled"
               value={gain}
               onClick={(e) => setGain(e.target.value)}

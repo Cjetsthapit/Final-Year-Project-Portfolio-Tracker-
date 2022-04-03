@@ -19,6 +19,6 @@ class Transaction extends Model
         'sebon_commission',
         'taxper',
         'tax',
-        'investment'
+        'investment','gainper'
     ];
 }

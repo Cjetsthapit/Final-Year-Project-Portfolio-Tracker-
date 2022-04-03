@@ -49,6 +49,8 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::delete('/delete-singletransaction/{id}',[TransactionController::class,'destroy']);
     Route::post('/editbuy-transaction/{id}',[TransactionController::class,'editBuy']);
     Route::post('/editsell-transaction/{id}',[TransactionController::class,'editSell']);
+    Route::get('/chart/{id}',[TransactionController::class,'chartbyName']);
+    Route::get('/singlechart/{id}/{name}',[TransactionController::class,'singleGraph']);
 
     Route::get('/callCompany/{id}',[App\Http\Controllers\Share\CompanyDetailController::class,'callCompany']);
     

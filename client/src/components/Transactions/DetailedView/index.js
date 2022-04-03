@@ -13,7 +13,7 @@ import {
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useHistory, useLocation, useParams } from "react-router-dom";
-import { singlePortfolio, singleTransaction } from "../../../api/service";
+import { fetchSingleLineData, singlePortfolio, singleTransaction } from "../../../api/service";
 import CssLoader from "../../CssLoader/CssLoader";
 import Layout from "../../Layout/Layout";
 import AddTransaction from "../add";
@@ -21,6 +21,7 @@ import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOut
 import Component1 from "./component1";
 import { tableCellClasses } from "@mui/material/TableCell";
 import { styled } from "@mui/material/styles";
+import MyResponsiveLine from "../Graph/line";
 
 const DetailedView = () => {
   const history = useHistory();
@@ -33,14 +34,36 @@ const DetailedView = () => {
   const [open, setOpen] = useState(false);
   const [openS, setOpenS] = useState(false);
   const [openE, setOpenE] = useState(false);
+  const [openES, setOpenES] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleOpenS = () => setOpenS(true);
   const handleCloseS = () => setOpenS(false);
   const handleOpenE = () => setOpenE(true);
   const handleCloseE = () => setOpenE(false);
+  const handleOpenES = () => setOpenES(true);
+  const handleCloseES = () => setOpenES(false);
+  const [gdata, setGdata] = useState();
   const location = useLocation();
-  const number = location.state?.number;
+  useEffect(()=>{
+    fetchSingleLineData(id,name).then(
+      res=>{
+        setGdata(res.data.data)
+      }
+    )
+  },[])
+
+
+  let out=[];
+  let da=[];
+  // gdata?.map((d)=>{
+     out = [...new Map(gdata?.map(item =>
+      [item['x'], item])).values()];
+      da.push({"id":id,"data":out})
+
+  // });
+
+  
   useEffect(() => {
     singlePortfolio(id).then((res) => {
       if(res.data.status  === 404){
@@ -58,7 +81,6 @@ const DetailedView = () => {
       if (res.data.status === 404) {
         history.goBack();
       } else {
-        console.log(res.data.data);
         setDatas(res.data.data[name]);
       }
     });
@@ -83,8 +105,13 @@ const DetailedView = () => {
     });
   };
   const handleEditTransaction = (item) => {
-    handleOpenE();
+    if (item.type === 'sell'){
+      handleOpenES();
+    }else{
+      handleOpenE()
+    }
     setType(item);
+
   };
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -160,7 +187,7 @@ const DetailedView = () => {
           <TableBody>
             {datas &&
               datas.map((item, index) => (
-                <TableRow>
+                <TableRow key={index}>
                   <StyledTableCell className="font-weight-bold">{index + 1}</StyledTableCell>
                   <StyledTableCell className="text-capitalize">{item.type}</StyledTableCell>
                   <StyledTableCell>{item.units}</StyledTableCell>
@@ -186,15 +213,33 @@ const DetailedView = () => {
             <AddTransaction
               open={openE}
               handleClose={handleCloseE}
-              title="Edit"
+              title="Edit Buy"
               button="Edit"
               share={[{ symbol: name }]}
               type="disabled"
               item={type}
             ></AddTransaction>
+            <AddTransaction
+              open={openES}
+              handleClose={handleCloseES}
+              title="Edit Sell"
+              button="Edit"
+              share={[{ symbol: name }]}
+              type="disabled"
+              item={type}
+              ttype="sell"
+
+            ></AddTransaction>
           </TableBody>
         </Table>
       </TableContainer>
+                
+      <div className="card mt-4" >
+        <div className="card-body" style={{height:'70vh'}}>
+        {da && <MyResponsiveLine data={da}/>}
+
+        </div>
+      </div>
     </>
   );
 };

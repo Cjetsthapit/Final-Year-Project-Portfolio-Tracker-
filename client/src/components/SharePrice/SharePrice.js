@@ -1,38 +1,36 @@
 import React, { useState, useEffect } from "react";
-import Layout from "../../components/Layout/Layout";
-import axios from "axios";
 import CssLoader from "../../components/CssLoader/CssLoader";
 import {
-  Table,
-  TableHead,
-  TableContainer,
-  TableRow,
-  TableCell,
-  Paper,
-  TableBody,
-  Typography,
-  Grid,
+    Table,
+    TableHead,
+    TableContainer,
+    TableRow,
+    TableCell,
+    Paper,
+    TableBody,
+    Typography,
+    Grid,
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
+import { fetchGainerLoserData, fetchShareData } from "../../api/service";
 
-const SharePrice = ({urlpath}) => {
+const SharePrice = ({ urlpath }) => {
   const [share, setShare] = useState();
-  const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(true);
   const [gainer, setGainer] = useState();
   const [loser, setLoser] = useState();
   useEffect(() => {
-    axios.get(`/api/call`).then((res) => {
-      setShare(res.data.share);
+    fetchShareData().then((share) => {
+      setShare(share);
     });
-
-    axios.get(`/api/gainer`).then((res) => {
-      setGainer(res.data.gainer);
-      setLoser(res.data.loser);
-      console.log(res.data);
-      setLoading(false);
-    });
+    fetchGainerLoserData().then(({gainer,loser}) => {
+        setGainer(gainer);
+        setLoser(loser);
+        setLoading(false);
+      });
+  
   }, []);
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -42,7 +40,7 @@ const SharePrice = ({urlpath}) => {
     },
     [`&.${tableCellClasses.body}`]: {
       fontSize: 14,
-      borderBottom:'1px solid black',
+      borderBottom: "1px solid black",
       color: theme.palette.common.white,
     },
   }));
@@ -84,13 +82,13 @@ const SharePrice = ({urlpath}) => {
       </>
     );
   };
-  if (loading) {
-    return (
+    if (loading) {
+      return (
 
-        <CssLoader />
+          <CssLoader />
 
-    );
-  }
+      );
+    }
   return (
     <>
       <Grid container spacing={3}>
@@ -108,8 +106,8 @@ const SharePrice = ({urlpath}) => {
                 {gainer?.map((row) => (
                   <TableRow
                     key={row.symbol}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 }}}
-                    style={{color:'#007000'}}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    style={{ color: "#007000" }}
                   >
                     <StyledTableCell component="th" scope="row">
                       <Link
@@ -123,7 +121,9 @@ const SharePrice = ({urlpath}) => {
                         {row.symbol}
                       </Link>
                     </StyledTableCell>
-                    <StyledTableCell align="right" className="text-success">{row.close}</StyledTableCell>
+                    <StyledTableCell align="right" className="text-success">
+                      {row.close}
+                    </StyledTableCell>
 
                     <StyledTableCell align="right" className="text-success">
                       {row.diffper}
@@ -148,9 +148,9 @@ const SharePrice = ({urlpath}) => {
                 {loser?.map((row) => (
                   <TableRow
                     key={row.symbol}
-                    sx={{ 
-                      "&:last-child td, &:last-child th": { border: 0 }
-                     }}
+                    sx={{
+                      "&:last-child td, &:last-child th": { border: 0 },
+                    }}
                   >
                     <StyledTableCell component="th" scope="row">
                       <Link
@@ -164,7 +164,9 @@ const SharePrice = ({urlpath}) => {
                         {row.symbol}
                       </Link>
                     </StyledTableCell>
-                    <StyledTableCell align="right"className="text-danger">{row.close}</StyledTableCell>
+                    <StyledTableCell align="right" className="text-danger">
+                      {row.close}
+                    </StyledTableCell>
 
                     <StyledTableCell align="right" className="text-danger">
                       {row.diffper}
@@ -206,13 +208,13 @@ const SharePrice = ({urlpath}) => {
                 <GreenTableRow
                   key={row.symbol}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                                 >
+                >
                   <Sample row={row} />
                 </GreenTableRow>
               ) : (
                 <RedTableRow
                   key={row.symbol}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 }}}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <Sample row={row} />
                 </RedTableRow>

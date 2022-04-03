@@ -23,6 +23,7 @@ import AdminRoute from './components/AdminRoute';
 import Dashboard from './Pages/Admin/Dashboard';
 import Layout from './components/Layout/Layout';
 import Controls from './Pages/Admin/Controls';
+import Graph from './components/Transactions/Graph';
 
 
 
@@ -71,6 +72,7 @@ function App() {
 
           <ProtectedRoute path="/portfolio" component={PortfolioList} />
           <ProtectedRoute path="/compare" component={Compare} />
+          <ProtectedRoute path="/portfolio-chart/:id" component={Graph} />
 
 
 

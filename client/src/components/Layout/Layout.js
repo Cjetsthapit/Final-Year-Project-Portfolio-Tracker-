@@ -96,8 +96,8 @@ function Layout(props) {
         localStorage.removeItem("auth_name");
         localStorage.removeItem("auth_id");
 
-        toast.success("Logged out Successfully");
         history.push("/");
+        toast.success("Logged out Successfully");
       }
     });
   };

@@ -79,6 +79,17 @@ class TransactionController extends Controller
     
     public function sellShare(Request $request)
     {   
+        // $validator =Validator::make($request->all(),[
+        //     'avg'=>'required',
+        //     'price'=>'required',
+        //     'units'=>'required',
+        //     'gainper'=>'required',
+        // ]);
+        // if($validator->fails()){
+        //     return response()->json([
+        //         'validation_errors'=>'404'
+        //     ]);
+        // }else{
         $avg=$request->avg;
         $type=$request->type;
         $price=$request->price;
@@ -130,8 +141,9 @@ class TransactionController extends Controller
         return response()->json([
             'status'=>200,
         ]); 
-        
     }
+        
+    
     public function editBuy(Request $request,$id){
         $transaction = Transaction::where('id',$id)->firstorfail()->delete();
 
@@ -255,4 +267,109 @@ class TransactionController extends Controller
         ]);  
 
     }
+    public function chartbyName($id,Request $request){
+        $list = Portfolio::select('id')->where('user_id',$request->user()->id)->get();
+        $flag=true;
+        $databyunits =[];
+        $databyinvestment =[];
+        
+        foreach($list as $data){
+            if ($data->id == $id){
+                $transaction = Transaction::all()->where('portfolio_id','=',$id)->groupBy('name');
+                foreach($transaction as $data){
+                    $unitsA=[];
+                    $investmentA=[];
+                    $units=0;
+                    $investment=0;
+                    foreach($data as $d){
+                        if($d->type == "buy"){
+                            $units = $units + $d->units;
+                            $investment += $d->investment;
+                        }
+                        else{
+                            $units = $units - $d->units;
+
+                        }
+                    }
+                    $unitsA['id']=$data[0]->name;
+                    $unitsA['portfolio_id']=$id;
+                    $unitsA['value']=$units;
+                    $unitsA['label']=$data[0]->name;
+                    $investmentA['id']=$data[0]->name;
+                    $investmentA['label']=$data[0]->name;
+                    $investmentA['value']=round($investment,0);
+                    $investmentA['portfolio_id']=$id;
+
+                    array_push($databyunits, $unitsA);
+                    array_push($databyinvestment, $investmentA);
+                }
+                return response()->json([
+                    'databyUnits'=>$databyunits,
+                    'databyInvestment'=>$databyinvestment
+                    
+                ]);
+                $flag=false;
+                break;
+            }
+            
+        }
+        if ($flag == true){
+            return response()->json([
+                'status'=>404,
+                
+            ]);
+        }
+
+    }
+
+    public function singleGraph($id,$name, Request $request)
+    {   
+        $list = Portfolio::select('id')->where('user_id',$request->user()->id)->get();
+        $flag=true;
+        $progress =[];
+        $demo=[];
+        $units=0;
+        $a=[];
+        
+        foreach($list as $data){
+            if ($data->id == $id){
+                $transactions = Transaction::all()->where('portfolio_id','=',$id)->where('name','=',$name)->sortBy('date')->groupBy('name');
+                if (!$transactions->isEmpty()){
+                    foreach($transactions as $transaction){
+                        foreach($transaction as $data){
+                            if ($data->type == "buy"){
+                                $units += $data->units;
+                                $demo['x']=$data->date;
+                                $demo['y']=$units;
+                                array_push($progress, $demo);
+                            }
+                            else{
+                                $units -= $data->units;
+                                $demo['x']=$data->date;
+                                $demo['y']=$units;
+                    array_push($progress, $demo);
+
+                            }
+                        }
+                    }
+                    // array_push($progress, $demo);
+                    return response()->json([
+                            "id"=>$name,
+                            "data"=>$progress,
+                    ]);
+                    $flag=false;
+                break;
+                 }
+            }
+        }
+        if ($flag == true){
+            return response()->json([
+                'status'=>404,
+                
+            ]);
+        }
+            
+        
+    }
+   
 }
