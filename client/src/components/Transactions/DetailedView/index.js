@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useHistory, useLocation, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { fetchSingleLineData, singlePortfolio, singleTransaction } from "../../../api/service";
 import CssLoader from "../../CssLoader/CssLoader";
 import Layout from "../../Layout/Layout";
@@ -44,13 +44,8 @@ const DetailedView = () => {
   const handleOpenES = () => setOpenES(true);
   const handleCloseES = () => setOpenES(false);
   const [gdata, setGdata] = useState();
-  const location = useLocation();
   useEffect(()=>{
-    fetchSingleLineData(id,name).then(
-      res=>{
-        setGdata(res.data.data)
-      }
-    )
+    
   },[])
 
 
@@ -65,6 +60,11 @@ const DetailedView = () => {
 
   
   useEffect(() => {
+    fetchSingleLineData(id,name).then(
+      res=>{
+        setGdata(res.data.data)
+      }
+    )
     singlePortfolio(id).then((res) => {
       if(res.data.status  === 404){
         history.goBack();
@@ -85,7 +85,7 @@ const DetailedView = () => {
       }
     });
     setLoading(false);
-  }, []);
+  }, [id,name,history]);
   if (loading) {
     return (
       <Layout>

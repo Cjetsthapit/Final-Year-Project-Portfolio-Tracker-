@@ -27,11 +27,12 @@ const Login = ({ handleChange }) => {
                     localStorage.setItem('auth_token', res.data.token);
                     localStorage.setItem('auth_name', res.data.username);
                     localStorage.setItem('auth_id', res.data.user_id);
+                    localStorage.setItem('auth_role', res.data.role);
 
                     // localStorage.setItem('verified_at', res.data.verified_at);
                     toast.success('Logged in Successfully');
                     if (res.data.role === 'admin') {
-                        history.push('/dashboard');
+                        history.push('/admin/dashboard');
                     } else {
                     history.push('/homepage');
                     }

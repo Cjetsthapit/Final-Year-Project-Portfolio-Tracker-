@@ -21,7 +21,6 @@ import DetailedView from './components/Transactions/DetailedView';
 import ResetPassword from './Pages/ResetPassword/ResetPassword';
 import AdminRoute from './components/AdminRoute';
 import Dashboard from './Pages/Admin/Dashboard';
-import Layout from './components/Layout/Layout';
 import Controls from './Pages/Admin/Controls';
 import Graph from './components/Transactions/Graph';
 
@@ -52,7 +51,12 @@ function App() {
 
         <Switch>
           <Route exact path="/" component={LoginRegister}>
-            {localStorage.getItem('auth_token') ? <Redirect to="/homepage" /> : <LoginRegister/>}
+            {/* {localStorage.getItem('auth_role')=== 'admin' ? <Redirect to="/admin/dashboard" /> 
+            : localStorage.getItem('auth_role')=== '' ? <Redirect to="/homepage" />
+            : <LoginRegister/> } */}
+            {/* {localStorage.getItem('auth_role') === 'admin' ?  <Redirect to="/admin/dashboard" /> :<LoginRegister/> } */}
+            {/* {localStorage.getItem('auth_role')==='null' ?  <Redirect to="/homepage" /> : <LoginRegister/>} */}
+            {/* {localStorage.getItem('auth_role') === 'admin' ? } */}
           </Route>
           <Route path="/forgot-password" component={ForgotPassword}></Route>
           <Route path="/reset-password" component={ResetPassword}></Route>
@@ -60,9 +64,7 @@ function App() {
           <Route path="/error" component={Error404}></Route>
 
 
-          <AdminRoute path="/dashboard" component={Dashboard}/>
-          <AdminRoute path="/data/:id" component={Company}/>
-          <AdminRoute path="/data" component={Controls}/>
+          
 
           <ProtectedRoute path="/homepage/:id" component={Company} />
           <ProtectedRoute path="/homepage" component={HomePage} />
@@ -75,13 +77,17 @@ function App() {
           <ProtectedRoute path="/portfolio-chart/:id" component={Graph} />
 
 
+          <AdminRoute path="/admin/dashboard" component={Dashboard}/>
+          <AdminRoute path="/admin/data/:id" component={Company}/>
+          <AdminRoute path="/admin/data" component={Controls}/>
+          <AdminRoute path="/admin/profile" component={Profile}/>
 
 
 
 
 
 
-          <Route component={Error404} />
+          <Route  component={Error404} />
         </Switch>
         
 

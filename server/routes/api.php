@@ -27,9 +27,12 @@ Route::post('/register',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);
 
 Route::middleware(['auth:sanctum'])->group(function(){
+    Route::post('/change',[AuthController::class,'changePassword']);
+
+
     Route::get('/sample',[TransactionController::class,'hello']);
     Route::post('/logout',[AuthController::class,'logout']);
-    Route::get('/getrole',[AuthController::class,'get_role']);
+    // Route::get('/getrole',[AuthController::class,'get_role']);
     // Portfolio
     Route::post('/create-portfolio',[PortfolioController::class,'createPortfolio']);
     Route::get('/get-portfolio/{id}',[PortfolioController::class,'listUserPortfolio']);

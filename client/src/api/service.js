@@ -52,3 +52,12 @@ export const fetchSingleLineData = async (id, name) => {
   const { data } = await axios.get(`/api/singlechart/${id}/${name}`);
   return { data };
 };
+export const fetchUser = async () => {
+  const { data } = await axios.get(`/api/user`);
+  return { data };
+};
+
+export const changePassword = async (pass) => {
+  const { data } = await axios.post(`/api/change`,pass);
+  return { data };
+};

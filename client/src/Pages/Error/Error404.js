@@ -7,7 +7,7 @@ import Layout from '../../components/Layout/Layout'
 const Error404 = () => {
     const paperStyle = { minWidth: '350px', padding: '1% 2%', width: '50%', marginTop: '40px' }
     return (
-        <Layout>
+        <>
         <Grid align="center">
             <Paper style={paperStyle} elevation={10}>
                 <h1>404</h1>
@@ -25,7 +25,7 @@ const Error404 = () => {
                 </div>
             </Paper>
         </Grid>
-        </Layout>
+        </>
     )
 }
 

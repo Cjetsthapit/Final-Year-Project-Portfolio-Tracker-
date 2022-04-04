@@ -24,14 +24,6 @@ const items = [
 function ProtectedRoute({ component: Component, ...restOfProps }) {
   const [role, setRole] = useState();
   const isAuthenticated = localStorage.getItem("auth_token");
-  useEffect(() => {
-    axios.get(`/api/getrole`).then((res) => {
-        setRole(res.data.role)
-    });
-    
-  }, []);
-
-
   return (
     <Route
       {...restOfProps}

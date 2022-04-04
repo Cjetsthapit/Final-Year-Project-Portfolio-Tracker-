@@ -18,13 +18,17 @@ import { toast } from 'react-toastify';
 const drawerWidth = 240;
 const items = [
     {
-        href: '/dashboard',
+        href: '/admin/dashboard',
         title: 'Dashboard'
     },
     {
-        href:'/data',
+        href:'/admin/data',
         title:'Controls'
-    }
+    },
+    {
+        href:'/admin/profile',
+        title:'Profile'
+    },
 ]
 function AdminLayout(props) {
     
@@ -95,9 +99,11 @@ function AdminLayout(props) {
                 localStorage.removeItem('auth_token');
                 localStorage.removeItem('auth_name');
                 localStorage.removeItem('auth_id');
+                localStorage.removeItem('auth_role');
 
                 toast.success('Logged out Successfully');
                 history.push("/");
+                // window.location.reload();
 
             }
         })

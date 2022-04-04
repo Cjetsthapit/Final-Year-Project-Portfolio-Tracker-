@@ -18,7 +18,7 @@ const Controls = () => {
       <Button variant="contained" sx={{marginRight:'2vh'}} onClick={handleDailyApi}>Call Daily Share API</Button>
       <Button variant="contained" onClick={handleCompanyImport}>Import Company Details</Button>
     </Grid>
-    <SharePrice urlpath={`/data/`}/>
+    <SharePrice urlpath={`/admin/data/`}/>
     </>
   )
 }

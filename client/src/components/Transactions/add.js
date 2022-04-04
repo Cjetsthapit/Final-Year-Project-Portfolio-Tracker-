@@ -8,12 +8,11 @@ import {
   RadioGroup,
   Select,
 } from "@material-ui/core";
-import { Modal, Box, Typography, Grid, Button, TextField } from "@mui/material";
+import { Modal, Box, Typography, Grid, TextField } from "@mui/material";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { addTransaction, singleTransaction } from "../../api/service";
 
 const style = {
   position: "absolute",
@@ -39,7 +38,6 @@ const AddTransaction = ({
 }) => {
   const { id } = useParams();
   const { name } = useParams();
-  const [fdata, setfData] = useState();
   const [tshare, setTshare] = useState();
   const [tdate, setTdate] = useState();
   const [tunits, setTunits] = useState();
@@ -56,7 +54,7 @@ const AddTransaction = ({
     axios.get(`/api/get-average/${id}/${name}`).then((res) => {
       setAvg(res.data.average);
     });
-  }, []);
+  }, [item,share,id,name]);
   const handleAdd = (e) => {
     e.preventDefault();
     if (item?.type === "sell") {

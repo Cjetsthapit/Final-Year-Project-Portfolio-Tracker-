@@ -15,6 +15,7 @@ import { ListItem, Tooltip } from "@material-ui/core";
 import NavItem from "../NavItem/NavItem";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { Avatar } from "@mui/material";
 const drawerWidth = 240;
 const items = [
   {
@@ -95,16 +96,14 @@ function Layout(props) {
         localStorage.removeItem("auth_token");
         localStorage.removeItem("auth_name");
         localStorage.removeItem("auth_id");
-
+        localStorage.removeItem("auth_role");
         history.push("/");
-        toast.success("Logged out Successfully");
+
+        // window.location.reload();
+        // toast.success("Logged out Successfully");
       }
     });
   };
-  // const handleApiCall = (e) => {
-  //   e.preventDefault();
-  //   axios.get("/api/dailycall").then((res) => console.log(res));
-  // };
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -136,7 +135,12 @@ function Layout(props) {
             onClick={handleDrawerToggle}
           />
           {/* </IconButton> */}
-
+          <Typography variant="subtitle2" sx={{ color: "#000" }}>
+          {/* <Avatar sx={{ bgcolor: 'red' }} aria-label="recipe">
+                      {localStorage.getItem("auth_name")[0]}
+                    </Avatar> */}
+                    {localStorage.getItem("auth_name")}
+          </Typography>
           <Box sx={{ flexGrow: 1 }} />
           {/* <Tooltip title="Contacts"> */}
           {/* <Typography
@@ -148,9 +152,7 @@ function Layout(props) {
             Import
           </Typography> */}
 
-          <Typography variant="subtitle2" sx={{ color: "#000" }}>
-            {localStorage.getItem("auth_name")}
-          </Typography>
+          
           <Tooltip title="Logout">
             <IconButton onClick={handleLogout}>
               <LogoutIcon fontSize="small" sx={{ ml: 2, color: "#000" }} />

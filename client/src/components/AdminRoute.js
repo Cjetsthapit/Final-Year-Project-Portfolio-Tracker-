@@ -4,7 +4,6 @@ import { Route,Redirect,useHistory} from 'react-router-dom';
 import { toast } from 'react-toastify';
 import CssLoader from './CssLoader/CssLoader';
 import AdminLayout from './Layout/AdminLayout';
-import Layout from './Layout/Layout';
 
 const AdminRoute=({component: Component, ...restOfProps})=>{
     const [isAuthenticated, setAuthenticated] = useState(false)
@@ -51,7 +50,7 @@ const AdminRoute=({component: Component, ...restOfProps})=>{
         <Route
         {...restOfProps}
         render={(props) =>
-          isAuthenticated ? (<AdminLayout><Component {...props} /></AdminLayout>) : <Redirect to="/" />
+          isAuthenticated ? (<AdminLayout><Component {...props} /></AdminLayout>) : <Redirect to={{pathname:'/' ,state:{from:location}}}/>
         }
       />
 

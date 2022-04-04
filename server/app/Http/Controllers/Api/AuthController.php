@@ -91,4 +91,28 @@ class AuthController extends Controller
             'role'=>$request->user()->role_as,
         ]);
     }
+    public function changePassword(Request $request){
+        $validator =Validator::make($request->all(),[
+            'oldPassword'=>'required',
+            'newPassword'=>'required',
+        ]);
+        if($validator->fails())
+        {
+            $status=406;
+            
+        }else{
+            $user = User::where('id', $request->user()->id)->first();
+            if( Hash::check($request->oldPassword, $user->password)) {
+                $user->password = Hash::make($request->newPassword);
+                $user->save();
+                $status = 200;
+            }
+            else{
+                $status = 403;
+            }
+        }
+        return response()->json([
+            'status'=>$status
+        ]);
+    }
 }
