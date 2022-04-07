@@ -20,7 +20,7 @@ const AdminRoute=({component: Component, ...restOfProps})=>{
     }, []);
     axios.interceptors.response.use(undefined, function axiosRetryInterceptor(err){
         if(err.response.status === 401){
-            toast.warn("Unauthorized",err.response.data.message);
+            // toast.warn("Unauthorized",err.response.data.message);
             history.push('/');
         }
         return Promise.reject(err);
@@ -50,7 +50,7 @@ const AdminRoute=({component: Component, ...restOfProps})=>{
         <Route
         {...restOfProps}
         render={(props) =>
-          isAuthenticated ? (<AdminLayout><Component {...props} /></AdminLayout>) : <Redirect to={{pathname:'/' ,state:{from:location}}}/>
+          isAuthenticated ? (<AdminLayout><Component {...props} /></AdminLayout>) : <Redirect to={{pathname:'/email' }}/>
         }
       />
 

@@ -9,9 +9,9 @@ import List from "@mui/material/List";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { NavLink, useHistory } from "react-router-dom";
+import { Link, NavLink, useHistory, useLocation } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { ListItem, Tooltip } from "@material-ui/core";
+import { Button, ListItem, Tooltip } from "@material-ui/core";
 import NavItem from "../NavItem/NavItem";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -38,7 +38,7 @@ const items = [
 function Layout(props) {
   const [role, setRole] = useState();
  
-
+  // const location = useLocation();
   const history = useHistory();
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -97,9 +97,10 @@ function Layout(props) {
         localStorage.removeItem("auth_name");
         localStorage.removeItem("auth_id");
         localStorage.removeItem("auth_role");
-        history.push("/");
+        localStorage.removeItem("verified");
+        history.push('/');
 
-        // window.location.reload();
+        // location.reload();
         // toast.success("Logged out Successfully");
       }
     });
@@ -135,13 +136,14 @@ function Layout(props) {
             onClick={handleDrawerToggle}
           />
           {/* </IconButton> */}
+          {localStorage.getItem('auth_role') === 'admin' && <Link to="/admin/dashboard" className="text-decoration-none"><Button variant="contained" color="secondary">Go to Admin</Button></Link>}
+          <Box sx={{ flexGrow: 1 }} />
           <Typography variant="subtitle2" sx={{ color: "#000" }}>
           {/* <Avatar sx={{ bgcolor: 'red' }} aria-label="recipe">
                       {localStorage.getItem("auth_name")[0]}
                     </Avatar> */}
                     {localStorage.getItem("auth_name")}
           </Typography>
-          <Box sx={{ flexGrow: 1 }} />
           {/* <Tooltip title="Contacts"> */}
           {/* <Typography
             variant="subtitle2"

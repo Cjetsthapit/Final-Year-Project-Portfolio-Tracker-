@@ -94,5 +94,11 @@ class AdminController extends Controller
         return response()->json([
             'users'=>$user
         ]);
-    }   
+    }  
+    public function latest(){
+        $day = DailyShare::select('created_at')->take(1)->get();
+        return response()->json([
+            'day'=>$day
+        ]);
+    } 
 }

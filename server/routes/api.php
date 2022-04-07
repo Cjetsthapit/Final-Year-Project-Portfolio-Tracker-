@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ResetPasswordController;
+use App\Http\Controllers\Api\EmailVerificationController;
 use App\Http\Controllers\Portfolio\PortfolioController;
 use App\Http\Controllers\Portfolio\TransactionController;
 use App\Http\Controllers\Admin\AdminController;
@@ -73,6 +74,7 @@ Route::middleware(['auth:sanctum','isAPIAdmin'])->group(function(){
     Route::get('/dailycall',[AdminController::class,'dailyShare']);
     Route::get('/company',[AdminController::class,'importCompanyDetails']);
     Route::get('/user-list',[AdminController::class,'userList']);
+    Route::get('/latest',[AdminController::class,'latest']);
 }); 
 
 

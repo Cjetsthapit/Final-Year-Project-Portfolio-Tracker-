@@ -34,28 +34,31 @@ const Register = ({ handleChange }) => {
     e.preventDefault();
     // console.log(name,email,date,password,cpassword);
     const data = { name: name, email: email, date: date, password: password };
-
-    axios.get("/sanctum/csrf-cookie").then((response) => {
-      axios.post(`api/register`, data).then((res) => {
-        console.log(res.data);
-        if (password === cpassword) {
-          if (res.data.status === "200") {
-            localStorage.setItem("auth_token", res.data.token);
-            localStorage.setItem("name", res.data.username);
-
-            toast.success("Registered Successfully");
-            history.push("/homepage");
-          } else if (
-            res.data.validation_errors.email[0] ===
-            "The email has already been taken."
-          ) {
-            toast.warn("Email already exists");
-          }
-        } else {
-          toast.error("Password does not match");
-        }
-      });
-    });
+    if (password === cpassword && password.length >=6 ){
+      axios.get("/sanctum/csrf-cookie").then((response) => {
+        axios.post(`api/register`, data).then((res) => {
+          console.log(res.data);
+          
+            if (res.data.status === "200") {
+              // localStorage.setItem('auth_token', res.data.token);
+              // localStorage.setItem('auth_name', res.data.username);
+              // localStorage.setItem('auth_id', res.data.user_id);
+              // localStorage.setItem('auth_role', res.data.role);
+              // localStorage.setItem('verified', '');
+  
+              toast.success("Registered Successfully");
+              history.push("/");
+            } else {
+              toast.warn("Email already exists");
+            }
+           
+        })
+      })
+    }
+    else {
+      toast.error("Password has to be grater than 6 char and must match");
+    }
+  
   };
   return (
     <Grid>

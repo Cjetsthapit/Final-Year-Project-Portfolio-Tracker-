@@ -61,3 +61,11 @@ export const changePassword = async (pass) => {
   const { data } = await axios.post(`/api/change`,pass);
   return { data };
 };
+export const userList = async () => {
+  const { data:{users} } = await axios.get(`/api/user-list`);
+  return { users };
+};
+export const sendVerificationLink = async () => {
+  const { data } = await axios.post(`/api/email/verification-notification`);
+  return { data };
+};

@@ -1,11 +1,10 @@
 import { Container, Grid, Typography } from "@material-ui/core";
 import React from "react";
-import { useParams } from "react-router-dom";
 import SmallComponent from "../BlockView/SmallComponent";
 
 const Component1 = ({ data, detailed }) => {
   let number = 0;
-  let name = "";
+  // let name = "";
   let sold = 0;
   let investment = 0;
   let buyNumber = 0;
@@ -14,9 +13,9 @@ const Component1 = ({ data, detailed }) => {
   let profit = 0;
   data &&
     data.map((d) => {
-      name = d.Share;
-
-      if (d.type == "buy") {
+      // name = d.Share;
+      
+      if (d.type === "buy") {
         buyNumber = buyNumber + d.units;
 
         number = number + d.units;
@@ -25,6 +24,7 @@ const Component1 = ({ data, detailed }) => {
         number = number - parseInt(d.units);
         sold = sold + d.units;
       }
+      return 1;
     });
   let latest = parseFloat(detailed?.close?.replace(/,/g, "")) * number;
   let broker = 0;
@@ -43,10 +43,11 @@ const Component1 = ({ data, detailed }) => {
   avg = investment / buyNumber;
   data &&
     data.map((a) => {
-      if (a.type == "sell") {
+      if (a.type === "sell") {
         soldValue = soldValue + a.investment;
         profit = profit + (a.investment - avg * a.units);
       }
+      return 1;
     });
   if (number !== 0) {
     if (latest <= number * avg) {
@@ -59,7 +60,7 @@ const Component1 = ({ data, detailed }) => {
   }
   let profitper = (profit / investment) * 100;
   let buttonClasses = ["btn", "btn-primary"];
-  const { id } = useParams();
+  // const { id } = useParams();
   if (detailed?.diffper < 0) {
     buttonClasses.pop();
     buttonClasses.push("btn-danger");

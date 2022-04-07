@@ -7,8 +7,8 @@ import { toast } from 'react-toastify';
 const Login = ({ handleChange }) => {
     const history = useHistory();
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('sthapitsrijan3@gmail.com');
+    const [password, setPassword] = useState('123456');
     const paperStyle = { padding: 40, minHeight: '50vh', minWidth: '350px',width:'30%', margin: "0 auto" }
     const avatarStyle = {  backgroundColor: '#222' }
     const btnstyle = { margin: '8px 0', backgroundColor: '#222' }
@@ -28,13 +28,20 @@ const Login = ({ handleChange }) => {
                     localStorage.setItem('auth_name', res.data.username);
                     localStorage.setItem('auth_id', res.data.user_id);
                     localStorage.setItem('auth_role', res.data.role);
+                    localStorage.setItem('verified', res.data.verified_at);
 
                     // localStorage.setItem('verified_at', res.data.verified_at);
                     toast.success('Logged in Successfully');
                     if (res.data.role === 'admin') {
                         history.push('/admin/dashboard');
                     } else {
-                    history.push('/homepage');
+                        if(res.data.verified_at === null){
+                            console.log('1')
+                            history.push('/email')
+                        }
+                        else{
+                            history.push('/homepage')
+                        }
                     }
                 } else if (res.data.status === 401) {
                     return toast.error(res.data.message);

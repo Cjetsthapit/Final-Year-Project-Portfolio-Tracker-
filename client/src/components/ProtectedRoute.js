@@ -3,32 +3,17 @@ import { Redirect, Route } from "react-router-dom";
 import AdminLayout from "./Layout/AdminLayout";
 import Layout from "./Layout/Layout";
 import axios from 'axios';
-const items = [
-  {
-      href: '/homepage',
-      title: 'Share Price'
-  },
-  {
-      href: '/portfolio',
-      title: 'My Portfolio'
-  },
-  {
-      href: '/compare',
-      title: 'Compare Stocks'
-  },
-  {
-      href: '/profile',
-      title: 'Profile'
-  }
-]
+import EmailVerify from "../Pages/EmailVerify";
+import LoginRegister from "../Pages/LoginRegister/LoginRegister";
+
 function ProtectedRoute({ component: Component, ...restOfProps }) {
-  const [role, setRole] = useState();
-  const isAuthenticated = localStorage.getItem("auth_token");
+  const isAuthenticated = localStorage.getItem("auth_token") ;
+  const isVerified = localStorage.getItem("verified") === null ;
   return (
     <Route
       {...restOfProps}
       render={(props) =>
-        isAuthenticated ? ( <Layout><Component {...props}/></Layout>) : <Redirect to="/" />
+        !isVerified ? ( <Layout><Component {...props}/></Layout>) : <LoginRegister/>
       }
     />
   );

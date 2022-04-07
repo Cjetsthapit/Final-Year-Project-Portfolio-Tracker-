@@ -23,6 +23,9 @@ import AdminRoute from './components/AdminRoute';
 import Dashboard from './Pages/Admin/Dashboard';
 import Controls from './Pages/Admin/Controls';
 import Graph from './components/Transactions/Graph';
+import EmailVerify from './Pages/EmailVerify';
+import VerificationRoute from './components/VerificationRoute';
+import Verified from './Pages/EmailVerify/verifying ';
 
 
 
@@ -51,6 +54,9 @@ function App() {
 
         <Switch>
           <Route exact path="/" component={LoginRegister}>
+          {localStorage.getItem("auth_token")  ? <Redirect to="/homepage"/> : <LoginRegister/>}
+          {/* {localStorage.getItem("verified") && localStorage.getItem("verified") === null  ? <Redirect to="/email"/> : <Redirect to="/"/>} */}
+
             {/* {localStorage.getItem('auth_role')=== 'admin' ? <Redirect to="/admin/dashboard" /> 
             : localStorage.getItem('auth_role')=== '' ? <Redirect to="/homepage" />
             : <LoginRegister/> } */}
@@ -65,6 +71,8 @@ function App() {
 
 
           
+          <VerificationRoute path="/email" component={EmailVerify} />
+          <VerificationRoute path="/verified" component={Verified} />
 
           <ProtectedRoute path="/homepage/:id" component={Company} />
           <ProtectedRoute path="/homepage" component={HomePage} />
