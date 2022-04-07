@@ -5,9 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ResetPasswordController;
 use App\Http\Controllers\Portfolio\PortfolioController;
-use App\Http\Controllers\Share\TransactionController;
-
-
+use App\Http\Controllers\Portfolio\TransactionController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Share\DailyShareController;
+use App\Http\Controllers\Share\CompanyDetailController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -55,13 +56,13 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::get('/chart/{id}',[TransactionController::class,'chartbyName']);
     Route::get('/singlechart/{id}/{name}',[TransactionController::class,'singleGraph']);
 
-    Route::get('/callCompany/{id}',[App\Http\Controllers\Share\CompanyDetailController::class,'callCompany']);
     
-
-
+    
+    
     // User call
-    Route::get('/call',[App\Http\Controllers\Share\DailyShareController::class,'call']);
-    Route::get('/gainer',[App\Http\Controllers\Share\DailyShareController::class,'gainer']);
+    Route::get('/callCompany/{id}',[App\Http\Controllers\Share\CompanyDetailController::class,'callCompany']);
+    Route::get('/call',[DailyShareController::class,'call']);
+    Route::get('/gainer',[DailyShareController::class,'gainer']);
 });
 
 Route::middleware(['auth:sanctum','isAPIAdmin'])->group(function(){
@@ -69,14 +70,14 @@ Route::middleware(['auth:sanctum','isAPIAdmin'])->group(function(){
         return response()->json(['message'=>'You are in ', 'status'=>200],200);
     });
     
-    Route::get('/dailycall',[App\Http\Controllers\Share\DailyShareController::class,'dailyShare']);
-    Route::get('/company',[App\Http\Controllers\Share\CompanyDetailController::class,'importCompanyDetails']);
+    Route::get('/dailycall',[AdminController::class,'dailyShare']);
+    Route::get('/company',[AdminController::class,'importCompanyDetails']);
+    Route::get('/user-list',[AdminController::class,'userList']);
 }); 
-
-
-
 
 
 Route::post('/forgot-password',[ResetPasswordController::class,'forgotPassword']);
 Route::post('/reset-password',[ResetPasswordController::class,'resetPassword']);
 
+Route::post('/email/verification-notification',[EmailVerificationController::class, 'sendVerificationEmail'])->middleware('auth:sanctum');
+Route::get('/verify-email/{id}/{hash}', [EmailVerificationController::class, 'verify'])->name('verification.verify')->middleware('auth:sanctum');
