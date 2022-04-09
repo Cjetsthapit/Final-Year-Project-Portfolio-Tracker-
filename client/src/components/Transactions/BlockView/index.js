@@ -1,4 +1,4 @@
-import { Container, Grid, Typography } from "@material-ui/core";
+import {  Grid, Typography } from "@material-ui/core";
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import SmallComponent from "./SmallComponent";

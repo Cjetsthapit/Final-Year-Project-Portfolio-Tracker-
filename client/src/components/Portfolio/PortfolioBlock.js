@@ -1,13 +1,12 @@
 import { Grid, Card, CardContent, Typography, Button } from '@material-ui/core';
 import axios from 'axios';
 import CssLoader from '../../components/CssLoader/CssLoader';
-import { Link, useHistory, withRouter } from 'react-router-dom';
+import { Link,  } from 'react-router-dom';
 import React, { useState } from 'react';
 import DeletePortfolio from './DeletePortfolio';
 import AddPortfolio from './AddPortfolio';
 
 const PortfolioBlock = ({ name, id,inv }) => {
-    const history = useHistory();
     const [loading, setLoading] = useState(false);
     const [openE, setOpenE] = useState(false);
     const handleOpenE = () => setOpenE(true);
@@ -24,9 +23,6 @@ const PortfolioBlock = ({ name, id,inv }) => {
         })
 
     };
-    const handleClick = (id) => {
-        history.push(`/portfolio/${id}`);
-    }
     if (loading) {
         return <CssLoader />
     }
@@ -54,9 +50,6 @@ const PortfolioBlock = ({ name, id,inv }) => {
                     </Typography>
 
                     <Grid container justify="space-between" alignItems='center'>
-                        {/* <Typography sx={{ mb: 1.5 }} variant="h6" >
-                            Profit: Rs. XXXXXX
-                        </Typography> */}
                         <Link to={{ pathname: `/portfolio/${id}`, state: { id } }} style={{ textDecoration: 'none', marginTop:8 }}  >
                             <Button variant="contained" color="secondary" style={{ marginLeft: 'auto' }}>
                                 View Shares</Button>
@@ -72,4 +65,4 @@ const PortfolioBlock = ({ name, id,inv }) => {
     )
 };
 
-export default withRouter(PortfolioBlock);
+export default (PortfolioBlock);

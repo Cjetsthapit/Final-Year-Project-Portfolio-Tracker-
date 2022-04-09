@@ -150,7 +150,7 @@ const DetailedView = () => {
       <AddTransaction
         open={open}
         handleClose={handleClose}
-        title="Add"
+        title="Add "
         button="Add"
         share={[{ symbol: name }]}
         type="disabled"

@@ -190,6 +190,7 @@ const Portfolio = () => {
         title="Add"
         button="Add"
         share={share}
+        ttype="buy"
       ></AddTransaction>
       <Container maxWidth="">
         <Grid item sm={12} lg={12} style={{ marginTop: 20 }}>

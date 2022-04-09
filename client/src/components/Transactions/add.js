@@ -51,7 +51,7 @@ const AddTransaction = ({
     if (item) {
       return;
     }
-    axios.get(`/api/get-average/${id}/${name}`).then((res) => {
+     name && axios.get(`/api/get-average/${id}/${name}`).then((res) => {
       setAvg(res.data.average);
     });
   }, [item,share,id,name]);

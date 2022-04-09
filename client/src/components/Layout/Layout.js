@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -9,13 +9,12 @@ import List from "@mui/material/List";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { Link, NavLink, useHistory, useLocation } from "react-router-dom";
+import { Link, useHistory} from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { Button, ListItem, Tooltip } from "@material-ui/core";
+import { Button, Tooltip } from "@material-ui/core";
 import NavItem from "../NavItem/NavItem";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Avatar } from "@mui/material";
 const drawerWidth = 240;
 const items = [
   {
@@ -36,9 +35,6 @@ const items = [
   },
 ];
 function Layout(props) {
-  const [role, setRole] = useState();
- 
-  // const location = useLocation();
   const history = useHistory();
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -101,7 +97,7 @@ function Layout(props) {
         history.push('/');
 
         // location.reload();
-        // toast.success("Logged out Successfully");
+        toast.success("Logged out Successfully");
       }
     });
   };
