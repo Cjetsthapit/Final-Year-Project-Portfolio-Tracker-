@@ -14,14 +14,13 @@ import AddCircleOutlineOutlined from "@material-ui/icons/AddCircleOutlineOutline
 import { Stack } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Redirect, useHistory, useParams } from "react-router-dom";
+import {  useHistory, useParams } from "react-router-dom";
 import { getTransaction, singlePortfolio } from "../../../api/service";
 import CssLoader from "../../../components/CssLoader/CssLoader";
-import Layout from "../../../components/Layout/Layout";
 import AddTransaction from "../../../components/Transactions/add";
 import Calculation from "../../../components/Transactions/Calculation/Calculation";
 import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableCell from "@mui/material/TableCell";
 import { styled } from "@mui/material/styles";
 import BigComponent from "../../../components/Transactions/BlockView/BigComponent";
 
@@ -38,7 +37,7 @@ const Portfolio = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    singlePortfolio(id) .then((res) => {
+    singlePortfolio(id).then((res) => {
       if(res.data.status === 404){
         history.goBack();
       }else{
@@ -57,7 +56,7 @@ const Portfolio = () => {
       setShare(res.data.share);
       setLoading(false);
     });
-  }, [setTransaction]);
+  }, [setTransaction,history,id]);
   let filterData = (symbol) => {
     return share && share.filter((item) => item.symbol === symbol);
   };
@@ -83,7 +82,7 @@ const Portfolio = () => {
   transaction &&
     Object.keys(transaction).map(function (key, index) {
       let extApi = filterData(key)[0];
-      let profitper = 0;
+      // let profitper = 0;
       let units = 0;
       let avg = 0;
       let buyNumber = 0;
@@ -124,7 +123,7 @@ const Portfolio = () => {
       avg = sinvestment / buyNumber;
       console.log(avg);
       transaction[key].map((a) => {
-        if (a.type == "sell") {
+        if (a.type === "sell") {
           svalue = svalue + a.investment;
           profit = profit + (a.investment - avg * a.units);
         }
@@ -138,7 +137,7 @@ const Portfolio = () => {
         }
       }
       today = today + units * extApi?.diff;
-      profitper = (profit / investment) * 100;
+      // profitper = (profit / investment) * 100;
     });
   
     

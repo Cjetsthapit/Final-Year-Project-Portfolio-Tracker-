@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchGraphData } from "../../../api/service";
-import MyResponsivePie from "./pie";
+import MyResponsivePie from "../../Graphs/pie";
 
 const Graph = () => {
   const { id } = useParams();

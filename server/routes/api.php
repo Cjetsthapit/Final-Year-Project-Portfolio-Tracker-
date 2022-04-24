@@ -77,6 +77,7 @@ Route::middleware(['auth:sanctum','isAPIAdmin'])->group(function(){
     Route::get('/latest',[AdminController::class,'latest']);
 }); 
 
+Route::get('/chart',[AdminController::class,'charts']);
 
 Route::post('/forgot-password',[ResetPasswordController::class,'forgotPassword']);
 Route::post('/reset-password',[ResetPasswordController::class,'resetPassword']);

@@ -20,7 +20,6 @@ const AdminRoute=({component: Component, ...restOfProps})=>{
     }, []);
     axios.interceptors.response.use(undefined, function axiosRetryInterceptor(err){
         if(err.response.status === 401){
-            // toast.warn("Unauthorized",err.response.data.message);
             history.push('/');
         }
         return Promise.reject(err);

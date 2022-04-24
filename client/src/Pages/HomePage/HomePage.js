@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import SharePrice from "../../components/SharePrice/SharePrice";
 
 const HomePage = () => {

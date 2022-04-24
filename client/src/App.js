@@ -3,7 +3,6 @@ import './App.css';
 import LoginRegister from './Pages/LoginRegister/LoginRegister';
 import { ToastContainer } from 'react-toastify';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import HomePage from './Pages/HomePage/HomePage';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -55,14 +54,6 @@ function App() {
         <Switch>
           <Route exact path="/" component={LoginRegister}>
           {localStorage.getItem("auth_token")  ? <Redirect to="/homepage"/> : <LoginRegister/>}
-          {/* {localStorage.getItem("verified") && localStorage.getItem("verified") === null  ? <Redirect to="/email"/> : <Redirect to="/"/>} */}
-
-            {/* {localStorage.getItem('auth_role')=== 'admin' ? <Redirect to="/admin/dashboard" /> 
-            : localStorage.getItem('auth_role')=== '' ? <Redirect to="/homepage" />
-            : <LoginRegister/> } */}
-            {/* {localStorage.getItem('auth_role') === 'admin' ?  <Redirect to="/admin/dashboard" /> :<LoginRegister/> } */}
-            {/* {localStorage.getItem('auth_role')==='null' ?  <Redirect to="/homepage" /> : <LoginRegister/>} */}
-            {/* {localStorage.getItem('auth_role') === 'admin' ? } */}
           </Route>
           <Route path="/forgot-password" component={ForgotPassword}></Route>
           <Route path="/reset-password" component={ResetPassword}></Route>

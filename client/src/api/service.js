@@ -28,6 +28,13 @@ export const singleTransaction = (id, name) => {
   return axios.get(`/api/get-singletransaction/${id}/${name}`);
 };
 
+export const fetchCompany = async (id) => {
+  const {
+    data: { status, company, chart },
+  } = await axios.get(`/api/callCompany/${id}`);
+  return {status,company,chart};
+};
+
 export const fetchShareData = async () => {
   const {
     data: { share },

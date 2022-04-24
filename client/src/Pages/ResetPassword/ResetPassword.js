@@ -10,7 +10,7 @@ import {
 import LockResetIcon from "@mui/icons-material/LockReset";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { useHistory, Link, useLocation } from "react-router-dom";
+import { useHistory,  useLocation } from "react-router-dom";
 const ResetPassword = () => {
   function useQuery() {
     return new URLSearchParams(useLocation().search);

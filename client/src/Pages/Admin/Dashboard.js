@@ -184,7 +184,7 @@ const Dashboard = () => {
     </TableContainer>
     <Divider/>
     <Grid style={{marginBottom:'2vh',marginTop:'5vh'}}>
-      <Button variant="contained" style={{marginRight:'3vh'}} onClick={handleDailyApi}>Call Daily Share API</Button>
+      <Button variant="contained" style={{marginRight:'3vh'}} onClick={handleDailyApi}>Fetch Daily Share </Button>
       <Button variant="contained" onClick={handleCompanyImport}>Import Company Details</Button>
     </Grid>
     <Chip color="secondary" label={latest} style={{marginBottom:'1vh'}}/>

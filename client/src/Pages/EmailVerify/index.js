@@ -4,17 +4,12 @@ import {
   Paper,
   Avatar,
   Typography,
-  Button,
 } from "@material-ui/core";
 import EmailIcon from '@mui/icons-material/Email';
 import { sendVerificationLink } from "../../api/service";
-import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import CssLoader from "../../components/CssLoader/CssLoader";
 const EmailVerify = () => {
-    function useQuery() {
-		return new URLSearchParams(useLocation().search);
-	  }
        const [loading, setLoading] = useState(false);
   const paperStyle = {
     padding: 40,

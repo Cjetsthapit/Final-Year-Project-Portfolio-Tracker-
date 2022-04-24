@@ -4,7 +4,6 @@ import {
   Paper,
   Avatar,
   Typography,
-  Button,
 } from "@material-ui/core";
 import EmailIcon from '@mui/icons-material/Email';
 
@@ -23,7 +22,7 @@ const Verified = () => {
           axios.get(api).then(res=>toast.success('Verification Complete'))
           localStorage.setItem('verified',true)
           history.push('/homepage');
-      },[])
+      },[history,query])
   const paperStyle = {
     padding: 40,
     minWidth: "350px",

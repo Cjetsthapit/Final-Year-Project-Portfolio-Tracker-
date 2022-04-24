@@ -21,7 +21,7 @@ import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOut
 import Component1 from "./component1";
 import { tableCellClasses } from "@mui/material/TableCell";
 import { styled } from "@mui/material/styles";
-import MyResponsiveLine from "../Graph/line";
+import MyResponsiveLine from "../../Graphs/line";
 
 const DetailedView = () => {
   const history = useHistory();
@@ -51,14 +51,12 @@ const DetailedView = () => {
 
   let out=[];
   let da=[];
-  // gdata?.map((d)=>{
+
      out = [...new Map(gdata?.map(item =>
       [item['x'], item])).values()];
       da.push({"id":id,"data":out})
 
-  // });
 
-  
   useEffect(() => {
     fetchSingleLineData(id,name).then(
       res=>{

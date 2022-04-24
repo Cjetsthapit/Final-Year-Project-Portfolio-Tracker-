@@ -1,12 +1,9 @@
 import { Button, Container, Grid, Typography } from '@material-ui/core'
 import AddCircleOutlineOutlined from '@material-ui/icons/AddCircleOutlineOutlined';
 import { Stack } from '@mui/material'
-import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { toast } from 'react-toastify';
 import {listUserPortfolio, portfolioInvestment } from '../../api/service';
 import CssLoader from '../../components/CssLoader/CssLoader';
-import Layout from '../../components/Layout/Layout'
 import AddPortfolio from '../../components/Portfolio/AddPortfolio';
 import PortfolioBlock from '../../components/Portfolio/PortfolioBlock';
 

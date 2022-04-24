@@ -31,21 +31,11 @@ const Register = ({ handleChange }) => {
   const avatarStyle = { backgroundColor: "#222" };
   const btnstyle = { margin: "8px 0", backgroundColor: "#222" };
   const handleRegister = (e) => {
-    e.preventDefault();
-    // console.log(name,email,date,password,cpassword);
     const data = { name: name, email: email, date: date, password: password };
     if (password === cpassword && password.length >=6 ){
       axios.get("/sanctum/csrf-cookie").then((response) => {
-        axios.post(`api/register`, data).then((res) => {
-          console.log(res.data);
-          
+        axios.post(`api/register`, data).then((res) => {    
             if (res.data.status === "200") {
-              // localStorage.setItem('auth_token', res.data.token);
-              // localStorage.setItem('auth_name', res.data.username);
-              // localStorage.setItem('auth_id', res.data.user_id);
-              // localStorage.setItem('auth_role', res.data.role);
-              // localStorage.setItem('verified', '');
-  
               toast.success("Registered Successfully");
               history.push("/");
             } else {
@@ -56,7 +46,7 @@ const Register = ({ handleChange }) => {
       })
     }
     else {
-      toast.error("Password has to be grater than 6 char and must match");
+      toast.error("Password has to be greater than 6 char and must match");
     }
   
   };

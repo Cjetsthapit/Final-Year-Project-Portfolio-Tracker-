@@ -1,6 +1,6 @@
 import { ResponsiveLine } from '@nivo/line'
 
-const MyResponsiveLine = ({ data  }) => (
+const MyResponsiveLine = ({ data }) => (
     <ResponsiveLine
         data={data}
         margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
@@ -20,7 +20,7 @@ const MyResponsiveLine = ({ data  }) => (
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: 'Date',
+            legend: '',
             legendOffset: 36,
             legendPosition: 'middle'
         }}
@@ -29,7 +29,7 @@ const MyResponsiveLine = ({ data  }) => (
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: 'U  nits',
+            legend: '',
             legendOffset: -50,
             legendPosition: 'middle'
         }}

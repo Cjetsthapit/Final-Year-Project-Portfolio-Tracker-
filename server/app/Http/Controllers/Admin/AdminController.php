@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\DailyShare;
 use App\Models\Company;
 use App\Models\User;
+use App\Models\Chart;
 use App\Models\Portfolio;
+
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -15,6 +17,7 @@ class AdminController extends Controller
 {
     public function dailyShare(){
         $daily =DailyShare::truncate();
+        
         $response = Http::get('https://nepstockapi.herokuapp.com/');
         // dd($response);
         $asd = json_decode($response,true);
@@ -23,16 +26,19 @@ class AdminController extends Controller
 
             $data = array_values($data);
            $daily = new DailyShare();
+           $chart =new Chart();
         //    $daily->Days_120= $data[0];
         //    $daily->Days_180= $data[1];
         //    $daily->Weeks_High_52= $data[2];
         //    $daily->Weeks_Low_53= $data[3];
         //    $daily->Conf= $data[5];
            $daily->Symbol= $data[15];
+           $chart->Symbol= $data[15];
             $daily->Open= $data[10];
             $daily->Low= $data[9];
             $daily->High= $data[8]; 
            $daily->Close= $data[4];
+           $chart->Close= $data[4];
             $daily->Diff= $data[6];
            $daily->DiffPer= $data[7];
            $daily->Turnover= $data[17];
@@ -45,9 +51,11 @@ class AdminController extends Controller
         //    $daily->VWAP_Per= $data[19];
         //    $daily->Volume= $data[20];
            $daily->save();
+           $chart->save();
         };
         return response()->json([
             'message'=>'Successful',
+            'data'=>$asd,
         ]);
     }
     public function importCompanyDetails(){
@@ -80,16 +88,8 @@ class AdminController extends Controller
         ]);
     }
     public function userList(Request $request){
-        // $user=User::all()
-        // ->join('portfolios','portfolios.user_id', '=', 'users.id')
-        // ->where('users.id','!=',$request->user()->id) 
-        // ->get();
         $user =  DB::select("SELECT u.name,u.email,count(p.user_id) AS 'portfolioCount'  FROM portfolios p right join users u 
         on u.id = p.user_id group by u.id , u.name,u.email having u.id !=0");
-        // $user =Portfolio::select('users.name', DB::raw("COUNT(portfolios.user_id) as no_of_portfolios"))
-        // ->rightJoin('users','users.id','=','portfolios.user_id')
-        // ->groupBy('users.id')
-        // ->get();
        
         return response()->json([
             'users'=>$user
@@ -101,4 +101,5 @@ class AdminController extends Controller
             'day'=>$day
         ]);
     } 
+   
 }
