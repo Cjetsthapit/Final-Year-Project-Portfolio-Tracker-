@@ -28,8 +28,8 @@ class PortfolioController extends Controller
                 'status'=>$portfolio
             ]);
     }
+    
     public function portfolioInvestment($id){
-        // $portfolio = Portfolio::where('user_id',$id)->get();
         $portfolio =Portfolio::where('user_id',$id)
         ->leftJoin('transactions','transactions.portfolio_id','=','portfolios.id')
         ->select('portfolios.id','portfolios.name as pname',DB::raw("SUM(transactions.investment) as total"),'transactions.name as tname')
@@ -37,11 +37,11 @@ class PortfolioController extends Controller
         ->groupBy('portfolios.id','pname','tname')
         ->get()
         ->groupBy('pname');
-            return response()->json([
-                'status'=>$portfolio
-            ]);
-    // }
+        return response()->json([
+            'status'=>$portfolio
+        ]);
     }
+
     public function singlePortfolio(Request $request, $id){
         $portfolio = Portfolio::where('id',$id)->where('user_id',$request->user()->id)->get();
         if ($portfolio->isEmpty()){
@@ -54,9 +54,6 @@ class PortfolioController extends Controller
                 'status'=>$portfolio
             ]);
         }
-        
-       
-
     }
 
     public function destroy($id){
@@ -64,7 +61,6 @@ class PortfolioController extends Controller
         return response()->json([
             'status'=>$portfolio,
         ]);  
-
     }
     public function update(Request $request, $id){
         try {
@@ -72,7 +68,6 @@ class PortfolioController extends Controller
         } catch (Exception $e) {
             
         }
-
         return response()->json($portfolio);
     }
 }

@@ -226,7 +226,6 @@ const DetailedView = () => {
               type="disabled"
               item={type}
               ttype="sell"
-
             ></AddTransaction>
           </TableBody>
         </Table>

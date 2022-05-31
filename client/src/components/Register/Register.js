@@ -14,7 +14,6 @@ import axios from "axios";
 import { useHistory } from "react-router";
 
 const Register = ({ handleChange }) => {
-  const history = useHistory();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [date, setDate] = useState("");
@@ -31,13 +30,18 @@ const Register = ({ handleChange }) => {
   const avatarStyle = { backgroundColor: "#222" };
   const btnstyle = { margin: "8px 0", backgroundColor: "#222" };
   const handleRegister = (e) => {
+    e.preventDefault();
     const data = { name: name, email: email, date: date, password: password };
+    if(name==='' || email==='' || date==='' ){
+    toast.warn('Please fill in all the fields')
+    }
+    else{
     if (password === cpassword && password.length >=6 ){
       axios.get("/sanctum/csrf-cookie").then((response) => {
         axios.post(`api/register`, data).then((res) => {    
             if (res.data.status === "200") {
               toast.success("Registered Successfully");
-              history.push("/");
+              window.location.reload();
             } else {
               toast.warn("Email already exists");
             }
@@ -48,7 +52,7 @@ const Register = ({ handleChange }) => {
     else {
       toast.error("Password has to be greater than 6 char and must match");
     }
-  
+  }
   };
   return (
     <Grid>
@@ -111,7 +115,6 @@ const Register = ({ handleChange }) => {
             value={cpassword}
             onChange={(e) => setCpassword(e.target.value)}
           />
-
           <Button
             type="submit"
             color="primary"
@@ -133,5 +136,4 @@ const Register = ({ handleChange }) => {
     </Grid>
   );
 };
-
 export default Register;

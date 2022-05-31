@@ -17,21 +17,12 @@ class AdminController extends Controller
 {
     public function dailyShare(){
         $daily =DailyShare::truncate();
-        
         $response = Http::get('https://nepstockapi.herokuapp.com/');
-        // dd($response);
         $asd = json_decode($response,true);
-        // dd($asd);
         foreach($asd as $data){
-
             $data = array_values($data);
            $daily = new DailyShare();
            $chart =new Chart();
-        //    $daily->Days_120= $data[0];
-        //    $daily->Days_180= $data[1];
-        //    $daily->Weeks_High_52= $data[2];
-        //    $daily->Weeks_Low_53= $data[3];
-        //    $daily->Conf= $data[5];
            $daily->Symbol= $data[15];
            $chart->Symbol= $data[15];
             $daily->Open= $data[10];
@@ -42,14 +33,6 @@ class AdminController extends Controller
             $daily->Diff= $data[6];
            $daily->DiffPer= $data[7];
            $daily->Turnover= $data[17];
-        //    $daily->Prev_Close= $data[11];
-        //    $daily->Range= $data[12];
-        //    $daily->RangePer= $data[13];
-        //    $daily->S_No= $data[14];
-        //    $daily->Trans= $data[16];
-        //    $daily->VWAP= $data[18];
-        //    $daily->VWAP_Per= $data[19];
-        //    $daily->Volume= $data[20];
            $daily->save();
            $chart->save();
         };

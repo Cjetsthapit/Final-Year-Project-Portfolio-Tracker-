@@ -77,7 +77,6 @@ const Compare = () => {
                 </Grid>
             </Grid>
             <Grid container justify="space-between" spacing={4}>
-                
                 <Grid item xs={3}>
                     <TableContainer
                         component={Paper}
@@ -136,7 +135,6 @@ const Compare = () => {
                         </Table>
                     </TableContainer>
                 </Grid>
-
                 <Grid item xs={3}>
                     <Row share={share1}></Row>
                 </Grid>

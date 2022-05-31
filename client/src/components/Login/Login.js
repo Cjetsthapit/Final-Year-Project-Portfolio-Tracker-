@@ -5,10 +5,8 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom'
 import { toast } from 'react-toastify';
 const Login = ({ handleChange }) => {
-    const history = useHistory();
-
-    const [email, setEmail] = useState('sthapitsrijan3@gmail.com');
-    const [password, setPassword] = useState('123456');
+    const history = useHistory();    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const paperStyle = { padding: 40, minHeight: '50vh', minWidth: '350px',width:'30%', margin: "0 auto" }
     const avatarStyle = {  backgroundColor: '#222' }
     const btnstyle = { margin: '8px 0', backgroundColor: '#222' }
@@ -22,15 +20,12 @@ const Login = ({ handleChange }) => {
                 if (!password || !email) {
                     return toast.error('Please fill in all the values');
                 }
-
                 if (res.data.status === 200) {
                     localStorage.setItem('auth_token', res.data.token);
                     localStorage.setItem('auth_name', res.data.username);
                     localStorage.setItem('auth_id', res.data.user_id);
                     localStorage.setItem('auth_role', res.data.role);
                     localStorage.setItem('verified', res.data.verified_at);
-
-                    // localStorage.setItem('verified_at', res.data.verified_at);
                     toast.success('Logged in Successfully');
                     if (res.data.role === 'admin') {
                         history.push('/admin/dashboard');
@@ -57,7 +52,7 @@ const Login = ({ handleChange }) => {
                     <Typography variant="h5">Login</Typography>
                 </Grid>
                 <form onSubmit={handleLogin}>
-                    <TextField label='Email' placeholder='Enter email' fullWidth margin="dense" variant="filled" value={email} onChange={e => setEmail(e.target.value)} />
+                    <TextField label='Email' placeholder='Enter email' fullWidth margin="dense" variant="filled" type="email" value={email} onChange={e => setEmail(e.target.value)} />
                     <TextField label='Password' placeholder='Enter password' type='password' fullWidth margin="dense" variant="filled" value={password} onChange={e => setPassword(e.target.value)} />
                     <Button type='submit' color='primary' variant="contained" style={btnstyle} fullWidth >Login</Button>
                 </form>
@@ -75,6 +70,5 @@ const Login = ({ handleChange }) => {
         </Grid>
     )
 }
-
 export default Login
 

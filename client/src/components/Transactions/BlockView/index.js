@@ -25,9 +25,7 @@ const BlockView = ({
   }
   return (
     <Grid item sm={12} lg={6}>
-      {/* <Link to={`/portfolio/${id}/${extApi && extApi.symbol}`} style={{textDecoration:'none'}} state={{number:'number'}}> */}
       <Link to={{ pathname: `/portfolio/${id}/${extApi && extApi.symbol}`, state:{ number: number } }} style={{ textDecoration: 'none' }} >
-
         <div className="card border-dark">
           <div className="card-header d-flex justify-content-between text-white border-secondary bg-dark">
             <Typography className="btn btn-secondary">
@@ -87,7 +85,6 @@ const BlockView = ({
                 }
                 data={extApi?.diff * number}
                 text={extApi?.diff * number >= 0 ? "text-success" : "text-danger"}
-
               />
             </div>
           </div>

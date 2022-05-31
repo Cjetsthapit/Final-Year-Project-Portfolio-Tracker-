@@ -40,11 +40,10 @@ const PortfolioList = () => {
         })
     })
 
-    // AddModal
     const [openM, setOpenM] = useState(false);
     const handleOpenM = () => setOpenM(true);
     const handleCloseM = () => setOpenM(false);
-    // DeleteModal
+
     let add = '';
     let unique = [];
     empty?.map(e => {

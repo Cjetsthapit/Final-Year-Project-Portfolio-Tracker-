@@ -12,6 +12,7 @@ import { tableCellClasses } from "@mui/material/TableCell";
 import { styled } from "@mui/material/styles";
 import SharePrice from "../../components/SharePrice/SharePrice";
 import axios from "axios";
+import { toast } from "react-toastify";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -99,10 +100,13 @@ const Dashboard = () => {
   const handleDailyApi=(e)=>{
     e.preventDefault();
     axios.get("/api/dailycall");
+    toast.success("Daily Data fetched");
   }
   const handleCompanyImport=(e)=>{
     e.preventDefault();
     axios.get("/api/company");
+    toast.success("Company Data Imported");
+
   }
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;

@@ -13,23 +13,20 @@ class CompanyDetailController extends Controller
 {
    
     public function callCompany($id){
-        
-        // $company =Company::where('sname', $id)->get();
         $company = Company::where('sname', $id)
         ->leftJoin('daily_shares','daily_shares.symbol', '=', 'companies.sname')
         ->get();
-        $chartData = Chart::select('close AS y','created_at')->where('symbol',$id)->orderBy('created_at')->latest()->take(7)->get();
-        // return response()->json([
-        //     'chart'=>$chart
-        // ]);
+        $chartData = Chart::select('close AS y','created_at')->where('symbol',$id)->latest()->take(7)->get();
         $chart=[];
         $progress =[];
         $demo=[];
         if (!$company->isEmpty()){
-            for($i=0; $i<count($chartData); $i++){
+            $j=1;
+            for($i=6; $i>=0; $i--){
                 
-                    $demo['x']=$i+1;
+                    $demo['x']=7-$i;
                     $demo['y']=str_replace(',','',$chartData[$i]->y);
+
                 array_push($chart,$demo);
             }
             $progress['data']=$chart;

@@ -105,5 +105,4 @@ const ResetPassword = () => {
     </Grid>
   );
 };
-
 export default ResetPassword;

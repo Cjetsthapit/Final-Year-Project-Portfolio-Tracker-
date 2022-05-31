@@ -34,16 +34,14 @@ Route::middleware(['auth:sanctum'])->group(function(){
 
     Route::get('/sample',[TransactionController::class,'hello']);
     Route::post('/logout',[AuthController::class,'logout']);
-    // Route::get('/getrole',[AuthController::class,'get_role']);
+
     // Portfolio
     Route::post('/create-portfolio',[PortfolioController::class,'createPortfolio']);
     Route::get('/get-portfolio/{id}',[PortfolioController::class,'listUserPortfolio']);
     Route::get('/get-user-portfolio/{id}',[PortfolioController::class,'portfolioInvestment']);
-    
     Route::get('/fetch-portfolio/{id}',[PortfolioController::class,'singlePortfolio']);
-    
-    Route::delete('/delete-portfolio/{id}',[PortfolioController::class,'destroy']);
     Route::patch('/update-portfolio/{id}',[PortfolioController::class,'update']);
+    Route::delete('/delete-portfolio/{id}',[PortfolioController::class,'destroy']);
     
     // Transaction 
     Route::post('/create-transaction',[TransactionController::class,'buyShare']);
@@ -62,6 +60,7 @@ Route::middleware(['auth:sanctum'])->group(function(){
     
     // User call
     Route::get('/callCompany/{id}',[App\Http\Controllers\Share\CompanyDetailController::class,'callCompany']);
+    
     Route::get('/call',[DailyShareController::class,'call']);
     Route::get('/gainer',[DailyShareController::class,'gainer']);
 });

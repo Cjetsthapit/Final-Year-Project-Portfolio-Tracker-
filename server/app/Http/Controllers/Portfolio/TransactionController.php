@@ -10,22 +10,6 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Portfolio;
 class TransactionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function buyShare(Request $request)
     {   
         $type=$request->type;
@@ -50,8 +34,6 @@ class TransactionController extends Controller
         else{
             $broker = .0027 * $total;
         }
-
-        
         $sebon =.00015*$total;
         $commission = $broker+$sebon+25;
         if ($type == 'buy'){
@@ -69,27 +51,14 @@ class TransactionController extends Controller
             'taxper'=>$gainper,
             'tax'=>round($gain,2),
             'investment'=>round($investment,2),
-
         ]);
         return response()->json([
             'status'=>'200',
         ]); 
-        
     }
     
     public function sellShare(Request $request)
     {   
-        // $validator =Validator::make($request->all(),[
-        //     'avg'=>'required',
-        //     'price'=>'required',
-        //     'units'=>'required',
-        //     'gainper'=>'required',
-        // ]);
-        // if($validator->fails()){
-        //     return response()->json([
-        //         'validation_errors'=>'404'
-        //     ]);
-        // }else{
         $avg=$request->avg;
         $type=$request->type;
         $price=$request->price;
@@ -113,8 +82,6 @@ class TransactionController extends Controller
         else{
             $broker = .0027 * $total;
         }
-        // $gainper=7.5;
-        
         $sebon =.00015*$total;
         $commission = $broker+$sebon+25;
         
@@ -122,8 +89,6 @@ class TransactionController extends Controller
                 $gain=($gainper/100)*((($price-$avg)*$units)-$commission);
             }
             $investment= ($total-$commission-$gain);
-
-        
         $transaction= Transaction::create([
             'portfolio_id'=>$request->portfolio_id,
             'name'=>$request->name,
@@ -146,15 +111,11 @@ class TransactionController extends Controller
     
     public function editBuy(Request $request,$id){
         $transaction = Transaction::where('id',$id)->firstorfail()->delete();
-
         $this->buyShare($request);
-
     }
     public function editSell(Request $request,$id){
         $transaction = Transaction::where('id',$id)->firstorfail()->delete();
-
         $this->sellShare($request);
-
     }
     public function hello(Request $request){
         return response()->json([
@@ -162,12 +123,6 @@ class TransactionController extends Controller
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id, Request $request)
     {
         $list = Portfolio::select('id')->where('user_id',$request->user()->id)->get();
@@ -182,7 +137,6 @@ class TransactionController extends Controller
                 $flag=false;
                 break;
             }
-            
         }
         if ($flag == true){
             return response()->json([
@@ -190,7 +144,6 @@ class TransactionController extends Controller
                 
             ]);
         }
-       
     }
 
  
@@ -239,40 +192,69 @@ class TransactionController extends Controller
             ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id){
         $transaction = Transaction::where('id',$id)->firstorfail()->delete();
         $count = Transaction::where('id',$id)->get();
-        
         return response()->json([
             'count'=>$count,
             'status'=>200,
         ]);  
 
     }
+    
+    public function singleGraph($id,$name, Request $request)
+    {   
+        $list = Portfolio::select('id')->where('user_id',$request->user()->id)->get();
+        $flag=true;
+        $progress =[];
+        $demo=[];
+        $units=0;
+        $a=[];
+        
+        foreach($list as $data){
+            if ($data->id == $id){
+                $transactions = Transaction::all()->where('portfolio_id','=',$id)->where('name','=',$name)->sortBy('date')->groupBy('name');
+                if (!$transactions->isEmpty()){
+                    foreach($transactions as $transaction){
+                        foreach($transaction as $data){
+                            if ($data->type == "buy"){
+                                $units += $data->units;
+                                $demo['x']=$data->date;
+                                $demo['y']=$units;
+                                array_push($progress, $demo);
+                            }
+                            else{
+                                $units -= $data->units;
+                                $demo['x']=$data->date;
+                                $demo['y']=$units;
+                    array_push($progress, $demo);
+
+                            }
+                        }
+                    }
+                    return response()->json([
+                            "id"=>$name,
+                            "data"=>$progress,
+                    ]);
+                    $flag=false;
+                break;
+                 }
+            }
+        }
+        if ($flag == true){
+            return response()->json([
+                'status'=>404,
+                
+            ]);
+        }
+            
+        
+    }
     public function chartbyName($id,Request $request){
         $list = Portfolio::select('id')->where('user_id',$request->user()->id)->get();
         $flag=true;
         $databyunits =[];
         $databyinvestment =[];
-        
         foreach($list as $data){
             if ($data->id == $id){
                 $transaction = Transaction::all()->where('portfolio_id','=',$id)->groupBy('name');
@@ -310,66 +292,13 @@ class TransactionController extends Controller
                 ]);
                 $flag=false;
                 break;
-            }
-            
+            } 
         }
         if ($flag == true){
             return response()->json([
                 'status'=>404,
-                
             ]);
         }
-
-    }
-
-    public function singleGraph($id,$name, Request $request)
-    {   
-        $list = Portfolio::select('id')->where('user_id',$request->user()->id)->get();
-        $flag=true;
-        $progress =[];
-        $demo=[];
-        $units=0;
-        $a=[];
-        
-        foreach($list as $data){
-            if ($data->id == $id){
-                $transactions = Transaction::all()->where('portfolio_id','=',$id)->where('name','=',$name)->sortBy('date')->groupBy('name');
-                if (!$transactions->isEmpty()){
-                    foreach($transactions as $transaction){
-                        foreach($transaction as $data){
-                            if ($data->type == "buy"){
-                                $units += $data->units;
-                                $demo['x']=$data->date;
-                                $demo['y']=$units;
-                                array_push($progress, $demo);
-                            }
-                            else{
-                                $units -= $data->units;
-                                $demo['x']=$data->date;
-                                $demo['y']=$units;
-                    array_push($progress, $demo);
-
-                            }
-                        }
-                    }
-                    // array_push($progress, $demo);
-                    return response()->json([
-                            "id"=>$name,
-                            "data"=>$progress,
-                    ]);
-                    $flag=false;
-                break;
-                 }
-            }
-        }
-        if ($flag == true){
-            return response()->json([
-                'status'=>404,
-                
-            ]);
-        }
-            
-        
     }
    
 }

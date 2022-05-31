@@ -41,7 +41,6 @@ const PortfolioBlock = ({ name, id,inv }) => {
 
                             <Button variant="contained" onClick={handleOpenD} style={{ marginLeft: '5px' }}>Delete</Button>
                         </Grid>
-
                     </Grid>
                     <AddPortfolio open={openE} handleClose={handleCloseE} handleOpen={handleOpenE} title="Edit Portfolio Name" button="Edit Portfolio" name={name} id={id} />
                     <DeletePortfolio openD={openD} handleCloseD={handleCloseD} handleOpenD={handleOpenD} id={id} name={name} handleDelete={handleDeletePortfolio} />
@@ -55,13 +54,9 @@ const PortfolioBlock = ({ name, id,inv }) => {
                                 View Shares</Button>
                         </Link>
                     </Grid>
-
                 </CardContent>
-
             </Card>
         </Grid>
-
-
     )
 };
 
